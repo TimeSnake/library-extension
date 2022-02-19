@@ -1,8 +1,8 @@
 package de.timesnake.library.extension.util.cmd;
 
 import de.timesnake.database.util.Database;
-import de.timesnake.database.util.object.Status;
 import de.timesnake.database.util.user.DbUser;
+import de.timesnake.library.basic.util.Status;
 
 import java.util.UUID;
 
@@ -205,11 +205,11 @@ public abstract class Argument {
     }
 
     public boolean isServerStatus(boolean sendMessage) {
-        if (Status.Server.getByDatabaseValue(this.string.toLowerCase()) != null) {
+        if (Status.Server.parseValue(this.string.toLowerCase()) != null) {
             return true;
         }
         try {
-            if (Status.Server.getByDatabaseValue(this.string) != null) {
+            if (Status.Server.parseValue(this.string) != null) {
                 return true;
             }
         } catch (IllegalArgumentException ignored) {
@@ -221,11 +221,11 @@ public abstract class Argument {
     }
 
     public boolean isPermissionStatus(boolean sendMessage) {
-        if (Status.Permission.getByDatabaseValue(this.string.toLowerCase()) != null) {
+        if (Status.Permission.parseValue(this.string.toLowerCase()) != null) {
             return true;
         }
         try {
-            if (Status.Permission.getByDatabaseValue(this.string) != null) {
+            if (Status.Permission.parseValue(this.string) != null) {
                 return true;
             }
         } catch (IllegalArgumentException ignored) {
@@ -237,11 +237,11 @@ public abstract class Argument {
     }
 
     public boolean isTicketStatus(boolean sendMessage) {
-        if (Status.Ticket.getByDatabaseValue(this.string.toLowerCase()) != null) {
+        if (Status.Ticket.parseValue(this.string.toLowerCase()) != null) {
             return true;
         }
         try {
-            if (Status.Ticket.getByDatabaseValue(this.string) != null) {
+            if (Status.Ticket.parseValue(this.string) != null) {
                 return true;
             }
         } catch (IllegalArgumentException ignored) {
@@ -338,15 +338,15 @@ public abstract class Argument {
     }
 
     public Status.Permission toPermissionStatus() {
-        return Status.Permission.getByDatabaseValue(this.string.toLowerCase()) != null ? Status.Permission.getByDatabaseValue(this.string.toLowerCase()) : Status.Permission.getByDatabaseValue(this.string);
+        return Status.Permission.parseValue(this.string.toLowerCase()) != null ? Status.Permission.parseValue(this.string.toLowerCase()) : Status.Permission.parseValue(this.string);
     }
 
     public Status.Server toServerStatus() {
-        return Status.Server.getByDatabaseValue(this.string.toLowerCase()) != null ? Status.Server.getByDatabaseValue(this.string.toLowerCase()) : Status.Server.getByDatabaseValue(this.string);
+        return Status.Server.parseValue(this.string.toLowerCase()) != null ? Status.Server.parseValue(this.string.toLowerCase()) : Status.Server.parseValue(this.string);
     }
 
     public Status.Ticket toTicketStatus() {
-        return Status.Ticket.getByDatabaseValue(this.string.toLowerCase()) != null ? Status.Ticket.getByDatabaseValue(this.string.toLowerCase()) : Status.Ticket.getByDatabaseValue(this.string);
+        return Status.Ticket.parseValue(this.string.toLowerCase()) != null ? Status.Ticket.parseValue(this.string.toLowerCase()) : Status.Ticket.parseValue(this.string);
     }
 
     public boolean equals(String string) {
