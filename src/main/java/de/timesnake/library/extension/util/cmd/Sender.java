@@ -200,6 +200,10 @@ public abstract class Sender {
         cmdSender.sendMessage(this.getMessageCommandHelp(text, command));
     }
 
+    public void sendNotEnoughCoinsMessage(float missingCoins) {
+        cmdSender.sendMessage(this.getSenderPlugin() + ChatColor.WARNING + "Not enough coins (" + ChatColor.VALUE + Chat.roundCoinAmount(missingCoins) + ChatColor.WARNING + " too few)");
+    }
+
     //hint
     //not exist
     public void sendMessageNotExist(String string, Integer code, String type) {

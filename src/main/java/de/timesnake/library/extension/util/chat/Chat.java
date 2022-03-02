@@ -40,4 +40,8 @@ public interface Chat {
         return new Arguments<>(sender, args);
     }
 
+    static float roundCoinAmount(float coins) {
+        return ((int) (coins * 100)) / 100f;
+    }
+
 }
