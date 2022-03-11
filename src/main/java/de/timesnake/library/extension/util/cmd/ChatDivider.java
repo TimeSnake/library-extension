@@ -9,6 +9,7 @@ public class ChatDivider {
 
     public static final String COLORED_OUT = ChatColor.DARK_PURPLE + "<- " + ChatColor.RESET;
     public static final String COLORED_IN = ChatColor.DARK_PURPLE + "-> " + ChatColor.RESET;
+    public static final String COLORED_OUT_IN = ChatColor.DARK_PURPLE + "<-> " + ChatColor.RESET;
 
     public static final String SECTION = ChatColor.WHITE + "---------------" + ChatColor.RESET;
     public static final String LONG_SECTION = ChatColor.WHITE + "--------------------" + ChatColor.RESET;
