@@ -44,4 +44,12 @@ public interface Chat {
         return ((int) (coins * 100)) / 100f;
     }
 
+    static String getTimeString(Integer time) {
+        if (time >= 60) {
+            return time / 60 + "min " + time % 60 + "s";
+        } else {
+            return time % 60 + "s";
+        }
+    }
+
 }
