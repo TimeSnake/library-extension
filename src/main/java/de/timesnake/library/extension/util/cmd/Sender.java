@@ -151,7 +151,8 @@ public abstract class Sender {
     }
 
     public void sendSystemMessage(String code) {
-        this.sendConsoleMessage("[Bukkit][Cmd] " + this.cmdSender.getName() + ": command execution cancelled (" + code + this.plugin.getCode() + ")");
+        this.sendConsoleMessage("[" + plugin.getName() + "][Cmd] " + this.cmdSender.getName() + ": command execution " +
+                "cancelled (" + code + this.plugin.getCode() + ")");
     }
 
     public abstract void sendConsoleMessage(String message);
