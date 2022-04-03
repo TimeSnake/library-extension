@@ -6,6 +6,8 @@ import de.timesnake.library.extension.util.cmd.Argument;
 import de.timesnake.library.extension.util.cmd.Arguments;
 import de.timesnake.library.extension.util.cmd.Sender;
 
+import java.util.Collection;
+
 public interface Chat {
 
     static String getSplitter() {
@@ -50,6 +52,18 @@ public interface Chat {
         } else {
             return time % 60 + "s";
         }
+    }
+
+    static String listToString(Collection<?> list) {
+        StringBuilder sb = new StringBuilder();
+
+        for (Object obj : list) {
+            sb.append(obj.toString()).append(", ");
+        }
+
+        sb.delete(sb.length() - 2, sb.length() - 1);
+
+        return sb.toString();
     }
 
 }
