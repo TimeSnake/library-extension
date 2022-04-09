@@ -7,7 +7,7 @@ public class Arguments<Argument extends de.timesnake.library.extension.util.cmd.
 
 
     private final Sender sender;
-    private LinkedList<Argument> args;
+    private final LinkedList<Argument> args;
 
     public Arguments(Sender sender, LinkedList<Argument> args) {
         this.args = args;
@@ -155,11 +155,14 @@ public class Arguments<Argument extends de.timesnake.library.extension.util.cmd.
     }
 
     public Arguments<Argument> removeLowerEquals(int index) {
-        Arguments<Argument> args = new Arguments<>(this);
+
+        LinkedList<Argument> args = new LinkedList<>();
+
         for (int i = index + 1; i < this.args.size(); i++) {
-            args.getAll().add(this.args.get(i));
+            args.addLast(this.args.get(i));
         }
-        return args;
+
+        return new Arguments<>(this.sender, args);
     }
 
     public Argument getArgumentByString(String arg) {
