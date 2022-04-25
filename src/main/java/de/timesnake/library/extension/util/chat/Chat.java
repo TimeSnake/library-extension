@@ -55,6 +55,10 @@ public interface Chat {
     }
 
     static String listToString(Collection<?> list) {
+        if (list.size() == 0) {
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
 
         for (Object obj : list) {
