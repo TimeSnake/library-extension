@@ -327,7 +327,8 @@ public abstract class Sender {
 
     public void sendMessageNoDateTime(String string) {
         String code = this.getHintCode(730);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "date", "datetime: 1hour;2day;1month;1year"));
+        cmdSender.sendMessage(this.getMessageFormatException(string, code, "date", "datetime: 1hour;2day;1month;" +
+                "1year"));
         this.sendSystemMessage(code + " [ArgsFormat]");
     }
 
@@ -482,7 +483,8 @@ public abstract class Sender {
     }
 
     public String getMessageMuted() {
-        return this.getSenderPlugin() + ChatColor.WARNING + "You are muted! For questions use " + ChatColor.VALUE + "/support";
+        return this.getSenderPlugin() + ChatColor.WARNING + "You are muted! For questions use " + ChatColor.VALUE +
+                "/support";
     }
 
     public String getMessageUnknownCommand() {

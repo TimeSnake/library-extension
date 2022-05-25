@@ -114,7 +114,8 @@ public abstract class Argument {
         }
         if (time != null) {
             if (time.length >= 2) {
-                if (new ArgumentTypeCheck(this.sender, time[0]).isHour(false) && new ArgumentTypeCheck(this.sender, time[1]).isMinute(false)) {
+                if (new ArgumentTypeCheck(this.sender, time[0]).isHour(false) && new ArgumentTypeCheck(this.sender,
+                        time[1]).isMinute(false)) {
                     if (time.length == 3) {
                         if (new ArgumentTypeCheck(this.sender, time[2]).isSecond(false)) {
                             return true;
@@ -338,15 +339,18 @@ public abstract class Argument {
     }
 
     public Status.Permission toPermissionStatus() {
-        return Status.Permission.parseValue(this.string.toLowerCase()) != null ? Status.Permission.parseValue(this.string.toLowerCase()) : Status.Permission.parseValue(this.string);
+        return Status.Permission.parseValue(this.string.toLowerCase()) != null ?
+                Status.Permission.parseValue(this.string.toLowerCase()) : Status.Permission.parseValue(this.string);
     }
 
     public Status.Server toServerStatus() {
-        return Status.Server.parseValue(this.string.toLowerCase()) != null ? Status.Server.parseValue(this.string.toLowerCase()) : Status.Server.parseValue(this.string);
+        return Status.Server.parseValue(this.string.toLowerCase()) != null ?
+                Status.Server.parseValue(this.string.toLowerCase()) : Status.Server.parseValue(this.string);
     }
 
     public Status.Ticket toTicketStatus() {
-        return Status.Ticket.parseValue(this.string.toLowerCase()) != null ? Status.Ticket.parseValue(this.string.toLowerCase()) : Status.Ticket.parseValue(this.string);
+        return Status.Ticket.parseValue(this.string.toLowerCase()) != null ?
+                Status.Ticket.parseValue(this.string.toLowerCase()) : Status.Ticket.parseValue(this.string);
     }
 
     public boolean equals(String string) {
