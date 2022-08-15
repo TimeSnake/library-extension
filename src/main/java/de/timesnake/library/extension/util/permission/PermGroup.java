@@ -45,14 +45,14 @@ public abstract class PermGroup<User> implements Comparable<PermGroup<?>> {
         return this.users;
     }
 
-    public Collection<ExPermission> getPermissions() {
+    public Collection<? extends ExPermission> getPermissions() {
         return new HashSet<>(this.permissions);
     }
 
     public abstract void updatePermissions();
 
     @Override
-    public int compareTo(PermGroup o) {
+    public int compareTo(PermGroup<?> o) {
         return Integer.compare(this.getRank(), o.getRank());
     }
 

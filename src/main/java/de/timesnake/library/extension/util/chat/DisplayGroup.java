@@ -1,11 +1,14 @@
 package de.timesnake.library.extension.util.chat;
 
 import de.timesnake.database.util.group.DbDisplayGroup;
+import de.timesnake.library.basic.util.Nullable;
+import de.timesnake.library.basic.util.chat.ExTextColor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-public abstract class DisplayGroup<ChatColor, User> {
+public class DisplayGroup<User> implements Comparable<DisplayGroup<?>> {
 
     public static final int MAX_PREFIX_LENGTH = 2;
 
@@ -16,7 +19,7 @@ public abstract class DisplayGroup<ChatColor, User> {
     protected final Set<User> users = new HashSet<>();
     protected final boolean showAlways;
     protected String prefix;
-    protected ChatColor prefixColor;
+    protected ExTextColor prefixColor;
 
     public DisplayGroup(DbDisplayGroup database) {
         this.database = database;
@@ -27,10 +30,11 @@ public abstract class DisplayGroup<ChatColor, User> {
         this.prefix = dbLocal.getPrefix();
         this.showAlways = dbLocal.showAlways();
 
-        this.prefixColor = this.loadPrefixColor(database.getChatColorName());
+        this.prefixColor = database.getChatColor();
+        if (this.prefixColor == null) {
+            this.prefixColor = ExTextColor.WHITE;
+        }
     }
-
-    public abstract ChatColor loadPrefixColor(String chatColorName);
 
     public String getName() {
         return this.name;
@@ -40,6 +44,7 @@ public abstract class DisplayGroup<ChatColor, User> {
         return this.rank;
     }
 
+    @Nullable
     public String getPrefix() {
         return this.prefix;
     }
@@ -49,13 +54,17 @@ public abstract class DisplayGroup<ChatColor, User> {
         this.database.setPrefix(prefix);
     }
 
-    public ChatColor getPrefixColor() {
+    @Nullable
+    public ExTextColor getPrefixColor() {
         return this.prefixColor;
     }
 
-    public void setPrefixColor(ChatColor chatColor) {
+    public void setPrefixColor(ExTextColor chatColor) {
+        if (chatColor == null) {
+            chatColor = ExTextColor.WHITE;
+        }
         this.prefixColor = chatColor;
-        this.database.setChatColorName(chatColor.toString());
+        this.database.setChatColor(chatColor);
     }
 
     public boolean isShowAlways() {
@@ -74,5 +83,21 @@ public abstract class DisplayGroup<ChatColor, User> {
         return this.users;
     }
 
+    @Override
+    public int compareTo(DisplayGroup<?> o) {
+        return Integer.compare(this.getRank(), o.getRank());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DisplayGroup<?> displayGroup)) return false;
+        return Objects.equals(name, displayGroup.name);
+    }
 }
 

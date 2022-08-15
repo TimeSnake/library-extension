@@ -9,6 +9,7 @@ plugins {
 
 repositories {
     mavenLocal()
+    mavenCentral()
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
@@ -18,6 +19,9 @@ dependencies {
     compileOnly 'de.timesnake:library-basic:1.0-SNAPSHOT'
     compileOnly 'de.timesnake:database-api:1.0-SNAPSHOT'
     compileOnly 'de.timesnake:channel-api:1.0-SNAPSHOT'
+    compileOnly 'net.kyori:adventure-api:4.11.0'
+    compileOnly "net.kyori:adventure-text-serializer-legacy:4.11.0"
+    compileOnly "net.kyori:adventure-text-serializer-plain:4.11.0"
 }
 
 group = 'de.timesnake'

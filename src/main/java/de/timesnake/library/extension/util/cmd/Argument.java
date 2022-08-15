@@ -3,6 +3,7 @@ package de.timesnake.library.extension.util.cmd;
 import de.timesnake.database.util.Database;
 import de.timesnake.database.util.user.DbUser;
 import de.timesnake.library.basic.util.Status;
+import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
 
@@ -21,6 +22,10 @@ public abstract class Argument {
 
     public String getString() {
         return this.string;
+    }
+
+    public Component getComponent() {
+        return Component.text(this.string);
     }
 
     @Override
