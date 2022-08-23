@@ -160,11 +160,11 @@ public abstract class Sender {
     public abstract void sendConsoleMessage(String message);
 
     public Component getHintCode(Integer code) {
-        return Component.text(HINT_PREFIX + code + Sender.SPLITTER + this.plugin.getCode());
+        return Component.text(HINT_PREFIX + code + Sender.SPLITTER + this.plugin.getCode(), ExTextColor.WARNING);
     }
 
     public Component getPermissionCode(Integer code) {
-        return Component.text(Sender.PERMISSION_PREFIX + code + Sender.SPLITTER + this.plugin.getCode());
+        return Component.text(Sender.PERMISSION_PREFIX + code + Sender.SPLITTER + this.plugin.getCode(), ExTextColor.WARNING);
 
     }
 
@@ -464,53 +464,73 @@ public abstract class Sender {
      * @param command command without slash
      **/
     public Component getMessageCommandHelp(Component text, Component command) {
-        return this.getSenderPlugin().append(Component.text(text + ": ", ExTextColor.PERSONAL))
-                .append(Component.text("/" + command, ExTextColor.VALUE));
+        return this.getSenderPlugin().append(text)
+                .append(Component.text(": ", ExTextColor.PERSONAL))
+                .append(Component.text("/", ExTextColor.VALUE))
+                .append(command);
     }
 
     //hint
     public Component getMessageNotExist(String string, Component code, String type) {
         return this.getSenderPlugin().append(Component.text(" " + type + " (", ExTextColor.WARNING))
                 .append(Component.text(string, ExTextColor.VALUE))
-                .append(Component.text(") doesn't exist (Code: " + code + ")", ExTextColor.WARNING));
+                .append(Component.text(") doesn't exist (Code: ", ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     public Component getMessageAlreadyExist(String string, Component code, String type) {
         return this.getSenderPlugin().append(Component.text(" " + type + " (", ExTextColor.WARNING))
                 .append(Component.text(string, ExTextColor.VALUE))
-                .append(Component.text(") already exist (Code: " + code + ")", ExTextColor.WARNING));
+                .append(Component.text(") already exist (Code: ", ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     //format exception
     public Component getMessageFormatException(String string, Component code, String type, String example) {
         return this.getSenderPlugin().append(Component.text(string, ExTextColor.VALUE))
-                .append(Component.text(" isn't a " + type + " (" + example + ") (Code: " + code + ")", ExTextColor.WARNING));
+                .append(Component.text(" isn't a " + type + " (" + example + ") (Code: ", ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     //argument amount
     public Component getMessageTooManyArguments(Component code) {
-        return this.getSenderPlugin().append(Component.text("Too many arguments (Code: " + code + ")", ExTextColor.WARNING));
+        return this.getSenderPlugin().append(Component.text("Too many arguments (Code: ", ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     public Component getMessageTooFewArguments(Component code) {
-        return this.getSenderPlugin().append(Component.text("Too few arguments (Code: " + code + ")", ExTextColor.WARNING));
+        return this.getSenderPlugin().append(Component.text("Too few arguments (Code: ", ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     public Component getMessageTooFewManyArguments(Component code) {
-        return this.getSenderPlugin().append(Component.text("Too few/many arguments (Code: " + code + ")").color(ExTextColor.WARNING));
+        return this.getSenderPlugin().append(Component.text("Too few/many arguments (Code: ").color(ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     //permission
     public Component getMessageNoPermission(Component code) {
-        return this.getSenderPlugin().append(Component.text("No permission (Code: " + code + ")").color(ExTextColor.WARNING));
+        return this.getSenderPlugin().append(Component.text("No permission (Code: ").color(ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     public Component getMessageNoPermissionsRank(Component code) {
-        return this.getSenderPlugin().append(Component.text("No permission, your rank is too low (Code: " + code + ")").color(ExTextColor.WARNING));
+        return this.getSenderPlugin().append(Component.text("No permission, your rank is too low (Code: ").color(ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
     public Component getMessageOnlyPlayer(Component code) {
-        return this.getSenderPlugin().append(Component.text("You must be a player (Code: " + code + ")").color(ExTextColor.WARNING));
+        return this.getSenderPlugin().append(Component.text("You must be a player (Code: ").color(ExTextColor.WARNING))
+                .append(code)
+                .append(Component.text(")", ExTextColor.WARNING));
     }
 
 
@@ -530,7 +550,8 @@ public abstract class Sender {
 
     public Component getMessageUseHelp(Component helpCommand) {
         return this.getSenderPlugin().append(Component.text("Use ").color(ExTextColor.PERSONAL))
-                .append(Component.text("/" + helpCommand).color(ExTextColor.VALUE))
+                .append(Component.text("/").color(ExTextColor.VALUE))
+                .append(helpCommand)
                 .append(Component.text(" for help").color(ExTextColor.PERSONAL));
     }
 
