@@ -10,6 +10,7 @@ import de.timesnake.library.extension.util.chat.Chat;
 import de.timesnake.library.extension.util.player.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.UUID;
 
@@ -157,6 +158,10 @@ public abstract class Sender {
                 "cancelled (" + code + this.plugin.getCode() + ")");
     }
 
+    public void sendSystemMessage(Component code, String info) {
+        this.sendSystemMessage(PlainTextComponentSerializer.plainText().serialize(code) + info);
+    }
+
     public abstract void sendConsoleMessage(String message);
 
     public Component getHintCode(Integer code) {
@@ -215,9 +220,10 @@ public abstract class Sender {
     /**
      * @param command command without slash
      **/
+    @Deprecated
     public void sendMessageCommandHelp(String text, String command) {
-        this.sendMessageCommandHelp(LegacyComponentSerializer.legacyAmpersand().deserialize(text),
-                LegacyComponentSerializer.legacyAmpersand().deserialize(command));
+        this.sendMessageCommandHelp(LegacyComponentSerializer.legacyAmpersand().deserialize(text).color(ExTextColor.PERSONAL),
+                LegacyComponentSerializer.legacyAmpersand().deserialize(command).color(ExTextColor.VALUE));
     }
 
     public void sendMessageCommandHelp(Component text, Component command) {
@@ -236,7 +242,7 @@ public abstract class Sender {
     public void sendMessageNotExist(String string, Integer code, String type) {
         Component fullCode = this.getHintCode(code);
         cmdSender.sendMessage(this.getMessageNotExist(string, fullCode, type));
-        this.sendSystemMessage(fullCode + " [Args]");
+        this.sendSystemMessage(fullCode, " [Args]");
     }
 
     public void sendMessagePlayerNotExist(String string) {
@@ -464,10 +470,10 @@ public abstract class Sender {
      * @param command command without slash
      **/
     public Component getMessageCommandHelp(Component text, Component command) {
-        return this.getSenderPlugin().append(text)
+        return this.getSenderPlugin().append(text.color(ExTextColor.PERSONAL))
                 .append(Component.text(": ", ExTextColor.PERSONAL))
                 .append(Component.text("/", ExTextColor.VALUE))
-                .append(command);
+                .append(command.color(ExTextColor.VALUE));
     }
 
     //hint

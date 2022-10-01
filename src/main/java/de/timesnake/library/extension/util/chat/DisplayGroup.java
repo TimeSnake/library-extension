@@ -1,8 +1,8 @@
 package de.timesnake.library.extension.util.chat;
 
 import de.timesnake.database.util.group.DbDisplayGroup;
-import de.timesnake.library.basic.util.Nullable;
 import de.timesnake.library.basic.util.chat.ExTextColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Objects;
