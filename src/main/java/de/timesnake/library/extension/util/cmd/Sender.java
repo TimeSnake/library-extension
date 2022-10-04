@@ -5,8 +5,9 @@ import de.timesnake.database.util.Database;
 import de.timesnake.database.util.group.DbPermGroup;
 import de.timesnake.database.util.user.DbUser;
 import de.timesnake.library.basic.util.chat.ExTextColor;
-import de.timesnake.library.basic.util.chat.Plugin;
 import de.timesnake.library.extension.util.chat.Chat;
+import de.timesnake.library.extension.util.chat.Code;
+import de.timesnake.library.extension.util.chat.Plugin;
 import de.timesnake.library.extension.util.player.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -16,10 +17,36 @@ import java.util.UUID;
 
 public abstract class Sender {
 
-    public static final String ERROR_PREFIX = "E";
-    public static final String PERMISSION_PREFIX = "P";
-    public static final String SPLITTER = " ";
-    public static final String HINT_PREFIX = "H";
+    public static final Code.Help PLAYER_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xnp", 1, "Player not exists");
+    public static final Code.Help WORLD_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xnw", 1, "World not exists");
+    public static final Code.Help WORLD_ALREADY_EXISTS = new Code.Help(Plugin.SYSTEM, "xaw", 2, "World already exists");
+    public static final Code.Help GAMEMODE_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xnm", 1, "gamemode not exists");
+    public static final Code.Help WEATHER_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xnw", 1, "weather not exists");
+    public static final Code.Help KILL_ALL_TYPE_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xnk", 1, "kill all type not exists");
+    public static final Code.Help SERVER_NAME_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xns", 1, "server name not exists");
+    public static final Code.Help SERVER_STATUS_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xns", 1, "server status not exists");
+    public static final Code.Help TICKET_STATUS_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xnt", 1, "ticket status not exists");
+    public static final Code.Help PERMISSION_STATUS_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xnr", 1, "permission status not exists");
+    public static final Code.Help GAME_NOT_EXISTS = new Code.Help(Plugin.SYSTEM, "xng", 1, "Game not exists");
+    public static final Code INTEGER_NON = new Code.Help(Plugin.SYSTEM, "nin", 1, "not an integer");
+    public static final Code FLOAT_NON = new Code.Help(Plugin.SYSTEM, "nfl", 1, "not a float");
+    public static final Code DOUBLE_NON = new Code.Help(Plugin.SYSTEM, "ndo", 1, "not a double");
+    public static final Code CHAT_COLOR_NON = new Code.Help(Plugin.SYSTEM, "ncc", 1, "not a chat color");
+    public static final Code COLOR_NON = new Code.Help(Plugin.SYSTEM, "nco", 1, "not a color");
+    public static final Code HEX_COLOR_NON = new Code.Help(Plugin.SYSTEM, "nhc", 1, "not a hex color");
+    public static final Code DATE_TIME_NON = new Code.Help(Plugin.SYSTEM, "ndt", 1, "not a date time");
+    public static final Code TIME_NON = new Code.Help(Plugin.SYSTEM, "nti", 1, "not a time");
+    public static final Code HOUR_NON = new Code.Help(Plugin.SYSTEM, "nho", 1, "not a hour");
+    public static final Code MINUTE_NON = new Code.Help(Plugin.SYSTEM, "nmi", 1, "not a minute");
+    public static final Code SECOND_NON = new Code.Help(Plugin.SYSTEM, "nse", 1, "not a second");
+    public static final Code UUID_NON = new Code.Help(Plugin.SYSTEM, "nuu", 1, "not an uuid");
+    public static final Code ITEM_NAME_NON = new Code.Help(Plugin.SYSTEM, "nit", 1, "not an item name");
+    public static final Code BOOLEAN_NON = new Code.Help(Plugin.SYSTEM, "nbo", 1, "not a boolean");
+    public static final Code TOO_MANY_ARGS = new Code.Help(Plugin.SYSTEM, "atm", 1, "Too many arguments");
+    public static final Code TOO_FEW_ARGS = new Code.Help(Plugin.SYSTEM, "atf", 1, "Too few arguments");
+    public static final Code TOO_FEW_MANY_ARGS = new Code.Help(Plugin.SYSTEM, "afm", 1, "Too few/many arguments");
+    public static final Code NO_PERMISSION_RANK = new Code.Permission(Plugin.SYSTEM, "prk", 1, "Rank too low");
+    public static final Code ONLY_PLAYER = new Code.Help(Plugin.SYSTEM, "pop", 1, "Only player");
 
     protected final CommandSender cmdSender;
     protected final Plugin plugin;
@@ -29,7 +56,16 @@ public abstract class Sender {
         this.plugin = plugin;
     }
 
-    public boolean hasPermission(String permission, int code) {
+    public boolean hasPermission(Code.Permission code) {
+        if (cmdSender.hasPermission(code.getPermission())) {
+            return true;
+        }
+        this.sendMessageNoPermission(code);
+        return false;
+    }
+
+    @Deprecated
+    public boolean hasPermission(String permission, Code.Permission code) {
         if (cmdSender.hasPermission(permission)) {
             return true;
         }
@@ -37,8 +73,19 @@ public abstract class Sender {
         return false;
     }
 
-    public boolean hasPermission(String permission, int code, boolean sendMessage) {
+    @Deprecated
+    public boolean hasPermission(String permission, Code.Permission code, boolean sendMessage) {
         if (cmdSender.hasPermission(permission)) {
+            return true;
+        }
+        if (sendMessage) {
+            this.sendMessageNoPermission(code);
+        }
+        return false;
+    }
+
+    public boolean hasPermission(Code.Permission code, boolean sendMessage) {
+        if (cmdSender.hasPermission(code.getPermission())) {
             return true;
         }
         if (sendMessage) {
@@ -153,25 +200,27 @@ public abstract class Sender {
         return false;
     }
 
+    @Deprecated
     public void sendSystemMessage(String code) {
         this.sendConsoleMessage("[" + plugin.getName() + "][Cmd] " + this.cmdSender.getName() + ": command execution " +
                 "cancelled (" + code + this.plugin.getCode() + ")");
     }
 
+    public void sendSystemMessage(Code code) {
+        this.sendConsoleMessage("[" + plugin.getName() + "][Cmd] " + this.cmdSender.getName() + ": command execution " +
+                "cancelled (" + code.asStringCode() + ")");
+    }
+
+    @Deprecated
     public void sendSystemMessage(Component code, String info) {
         this.sendSystemMessage(PlainTextComponentSerializer.plainText().serialize(code) + info);
     }
 
+    public void sendSystemMessage(Code code, String info) {
+        this.sendSystemMessage(code.asStringCode() + info);
+    }
+
     public abstract void sendConsoleMessage(String message);
-
-    public Component getHintCode(Integer code) {
-        return Component.text(HINT_PREFIX + code + Sender.SPLITTER + this.plugin.getCode(), ExTextColor.WARNING);
-    }
-
-    public Component getPermissionCode(Integer code) {
-        return Component.text(Sender.PERMISSION_PREFIX + code + Sender.SPLITTER + this.plugin.getCode(), ExTextColor.WARNING);
-
-    }
 
     public String getName() {
         return cmdSender.getName();
@@ -186,6 +235,8 @@ public abstract class Sender {
         this.cmdSender.sendMessage(message);
     }
 
+    //already exist
+
     @Deprecated
     public void sendPluginMessage(String message) {
         this.cmdSender.sendMessage(Chat.getSenderPlugin(plugin)
@@ -199,6 +250,8 @@ public abstract class Sender {
     public CommandSender getCommandSender() {
         return this.cmdSender;
     }
+
+    //format exception
 
     public String getPluginName() {
         return this.plugin.getName();
@@ -239,209 +292,176 @@ public abstract class Sender {
 
     //hint
     //not exist
-    public void sendMessageNotExist(String string, Integer code, String type) {
-        Component fullCode = this.getHintCode(code);
-        cmdSender.sendMessage(this.getMessageNotExist(string, fullCode, type));
-        this.sendSystemMessage(fullCode, " [Args]");
+    public void sendMessageNotExist(String string, Code code, String type) {
+        cmdSender.sendMessage(this.getMessageNotExist(string, code, type));
+        this.sendSystemMessage(code, " [Args]");
     }
 
     public void sendMessagePlayerNotExist(String string) {
-        Component code = this.getHintCode(700);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "Player"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, PLAYER_NOT_EXISTS, "Player"));
+        this.sendSystemMessage(PLAYER_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessageWorldNotExist(String string) {
-        Component code = this.getHintCode(701);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "World"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, WORLD_NOT_EXISTS, "World"));
+        this.sendSystemMessage(WORLD_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessageGamemodeNotExist(String string) {
-        Component code = this.getHintCode(702);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "Gamemode"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, GAMEMODE_NOT_EXISTS, "Gamemode"));
+        this.sendSystemMessage(GAMEMODE_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessageWeatherTypeNotExist(String string) {
-        Component code = this.getHintCode(703);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "Weather-type"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, WEATHER_NOT_EXISTS, "Weather-type"));
+        this.sendSystemMessage(WEATHER_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessageKillAllTypeNotExist(String string) {
-        Component code = this.getHintCode(704);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "KillAll-type"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, KILL_ALL_TYPE_NOT_EXISTS, "KillAll-type"));
+        this.sendSystemMessage(KILL_ALL_TYPE_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessageServerNameNotExist(String string) {
-        Component code = this.getHintCode(705);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "Server-name"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, SERVER_NAME_NOT_EXISTS, "Server-name"));
+        this.sendSystemMessage(SERVER_NAME_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessageServerStatusNotExist(String string) {
-        Component code = this.getHintCode(706);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "Server-status"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, SERVER_STATUS_NOT_EXISTS, "Server-status"));
+        this.sendSystemMessage(SERVER_STATUS_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessagePermissionStatusNotExist(String string) {
-        Component code = this.getHintCode(707);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "Permission-status"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, PERMISSION_STATUS_NOT_EXISTS, "Permission-status"));
+        this.sendSystemMessage(PERMISSION_STATUS_NOT_EXISTS, " [Args]");
+    }
+
+    public void sendMessageTicketStatusNotExist(String string) {
+        cmdSender.sendMessage(this.getMessageNotExist(string, TICKET_STATUS_NOT_EXISTS, "Ticket-status"));
+        this.sendSystemMessage(TICKET_STATUS_NOT_EXISTS, " [Args]");
     }
 
     public void sendMessageGameNotExist(String string) {
-        Component code = this.getHintCode(723);
-        cmdSender.sendMessage(this.getMessageNotExist(string, code, "Game"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageNotExist(string, GAME_NOT_EXISTS, "Game"));
+        this.sendSystemMessage(GAME_NOT_EXISTS, " [Args]");
     }
 
-    //already exist
-
-    public void sendMessageAlreadyExist(String string, Integer code, String type) {
-        Component fullCode = this.getHintCode(code);
-        cmdSender.sendMessage(this.getMessageAlreadyExist(string, fullCode, type));
-        this.sendSystemMessage(fullCode + " [Args]");
+    public void sendMessageAlreadyExist(String string, Code code, String type) {
+        cmdSender.sendMessage(this.getMessageAlreadyExist(string, code, type));
+        this.sendSystemMessage(code, " [Args]");
     }
 
     public void sendMessageWorldAlreadyExist(String string) {
-        Component code = this.getHintCode(735);
-        cmdSender.sendMessage(this.getMessageAlreadyExist(string, code, "World"));
-        this.sendSystemMessage(code + " [Args]");
+        cmdSender.sendMessage(this.getMessageAlreadyExist(string, WORLD_ALREADY_EXISTS, "World"));
+        this.sendSystemMessage(WORLD_ALREADY_EXISTS, " [Args]");
     }
 
-    //format exception
-
-    public void sendMessageFormatException(String string, Integer code, String type, String example) {
-        Component fullCode = this.getHintCode(code);
-        cmdSender.sendMessage(this.getMessageFormatException(string, fullCode, type, example));
-        this.sendSystemMessage(fullCode + " [ArgsFormat]");
+    public void sendMessageFormatException(String string, Code code, String type, String example) {
+        cmdSender.sendMessage(this.getMessageFormatException(string, code, type, example));
+        this.sendSystemMessage(code, " [ArgsFormat]");
     }
 
     public void sendMessageNoInteger(String string) {
-        Component code = this.getHintCode(710);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "int", "int: 12"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, INTEGER_NON, "int", "int: 12"));
+        this.sendSystemMessage(INTEGER_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoFloat(String string) {
-        Component code = this.getHintCode(711);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "float", "float: 0.123"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, FLOAT_NON, "float", "float: 0.123"));
+        this.sendSystemMessage(FLOAT_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoDouble(String string) {
-        Component code = this.getHintCode(729);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "double", "double: 0.123456"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, DOUBLE_NON, "double", "double: 0.123456"));
+        this.sendSystemMessage(DOUBLE_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoChatColor(String string) {
-        Component code = this.getHintCode(712);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "chatcolor", "chatcolor: DARK_BLUE"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, CHAT_COLOR_NON, "chatcolor", "chatcolor: DARK_BLUE"));
+        this.sendSystemMessage(CHAT_COLOR_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoColor(String string) {
-        Component code = this.getHintCode(713);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "color", "color: RED"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, COLOR_NON, "color", "color: RED"));
+        this.sendSystemMessage(COLOR_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoHexColor(String string) {
-        Component code = this.getHintCode(741);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "hex-color", "hex-color: 123FA1"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, HEX_COLOR_NON, "hex-color", "hex-color: 123FA1"));
+        this.sendSystemMessage(HEX_COLOR_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoDateTime(String string) {
-        Component code = this.getHintCode(730);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "date", "datetime: 1hour;2day;1month;" +
+        cmdSender.sendMessage(this.getMessageFormatException(string, DATE_TIME_NON, "date", "datetime: 1hour;2day;1month;" +
                 "1year"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        this.sendSystemMessage(DATE_TIME_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoTime(String string) {
-        Component code = this.getHintCode(714);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "time", "time: 12:34"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, TIME_NON, "time", "time: 12:34"));
+        this.sendSystemMessage(TIME_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoHour(String string) {
-        Component code = this.getHintCode(715);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "timehour", "hours: 0-23"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, HOUR_NON, "timehour", "hours: 0-23"));
+        this.sendSystemMessage(HOUR_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoMinute(String string) {
-        Component code = this.getHintCode(716);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "timeminute", "minutes: 0-59"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, MINUTE_NON, "timeminute", "minutes: 0-59"));
+        this.sendSystemMessage(MINUTE_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoSecond(String string) {
-        Component code = this.getHintCode(717);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "timesecond", "seconds: 0-59"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, SECOND_NON, "timesecond", "seconds: 0-59"));
+        this.sendSystemMessage(SECOND_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoUuid(String string) {
-        Component code = this.getHintCode(718);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "uuid", "uuid from player"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, UUID_NON, "uuid", "uuid from player"));
+        this.sendSystemMessage(UUID_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoBoolean(String string) {
-        Component code = this.getHintCode(719);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "boolean", "true or false"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, BOOLEAN_NON, "boolean", "true or false"));
+        this.sendSystemMessage(BOOLEAN_NON, " [ArgsFormat]");
     }
 
     public void sendMessageNoItemName(String string) {
-        Component code = this.getHintCode(731);
-        cmdSender.sendMessage(this.getMessageFormatException(string, code, "item-name", "dirt"));
-        this.sendSystemMessage(code + " [ArgsFormat]");
+        cmdSender.sendMessage(this.getMessageFormatException(string, ITEM_NAME_NON, "item-name", "dirt"));
+        this.sendSystemMessage(ITEM_NAME_NON, " [ArgsFormat]");
     }
 
     //argument amount
     public void sendMessageTooManyArguments() {
-        Component code = this.getHintCode(722);
-        cmdSender.sendMessage(this.getMessageTooManyArguments(code));
-        this.sendSystemMessage(code + " [ArgsLength]");
+        cmdSender.sendMessage(this.getMessageTooManyArguments(TOO_MANY_ARGS));
+        this.sendSystemMessage(TOO_MANY_ARGS, " [ArgsLength]");
     }
 
     public void sendMessageTooFewArguments() {
-        Component code = this.getHintCode(721);
-        cmdSender.sendMessage(this.getMessageTooFewArguments(code));
-        this.sendSystemMessage(code + " [ArgsLength]");
+        cmdSender.sendMessage(this.getMessageTooFewArguments(TOO_FEW_ARGS));
+        this.sendSystemMessage(TOO_FEW_ARGS, " [ArgsLength]");
     }
 
     public void sendMessageTooFewManyArguments() {
-        Component code = this.getHintCode(720);
-        cmdSender.sendMessage(this.getMessageTooFewManyArguments(code));
-        this.sendSystemMessage(code + " [ArgsLength]");
+        cmdSender.sendMessage(this.getMessageTooFewManyArguments(TOO_FEW_MANY_ARGS));
+        this.sendSystemMessage(TOO_FEW_MANY_ARGS, " [ArgsLength]");
     }
 
-    //permission
-    public void sendMessageNoPermission(Integer code) {
-        Component fullCode = this.getPermissionCode(code);
-        cmdSender.sendMessage(this.getMessageNoPermission(fullCode));
+    public void sendMessageNoPermission(Code.Permission code) {
+        cmdSender.sendMessage(this.getMessageNoPermission(code));
         this.sendSystemMessage(code + " [Perm]");
     }
 
     public void sendMessageNoPermissionsRank() {
-        Component code = this.getPermissionCode(603);
-        cmdSender.sendMessage(this.getMessageNoPermissionsRank(code));
-        this.sendSystemMessage(code + " [Rank]");
+        cmdSender.sendMessage(this.getMessageNoPermissionsRank(NO_PERMISSION_RANK));
+        this.sendSystemMessage(NO_PERMISSION_RANK, " [Rank]");
     }
 
 
     public void sendMessageOnlyPlayer() {
-        Component code = this.getHintCode(726);
-        cmdSender.sendMessage(this.getMessageOnlyPlayer(code));
+        cmdSender.sendMessage(this.getMessageOnlyPlayer(ONLY_PLAYER));
     }
 
     //chat
@@ -477,65 +497,65 @@ public abstract class Sender {
     }
 
     //hint
-    public Component getMessageNotExist(String string, Component code, String type) {
+    public Component getMessageNotExist(String string, Code code, String type) {
         return this.getSenderPlugin().append(Component.text(" " + type + " (", ExTextColor.WARNING))
                 .append(Component.text(string, ExTextColor.VALUE))
                 .append(Component.text(") doesn't exist (Code: ", ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    public Component getMessageAlreadyExist(String string, Component code, String type) {
+    public Component getMessageAlreadyExist(String string, Code code, String type) {
         return this.getSenderPlugin().append(Component.text(" " + type + " (", ExTextColor.WARNING))
                 .append(Component.text(string, ExTextColor.VALUE))
                 .append(Component.text(") already exist (Code: ", ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
     //format exception
-    public Component getMessageFormatException(String string, Component code, String type, String example) {
+    public Component getMessageFormatException(String string, Code code, String type, String example) {
         return this.getSenderPlugin().append(Component.text(string, ExTextColor.VALUE))
                 .append(Component.text(" isn't a " + type + " (" + example + ") (Code: ", ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
     //argument amount
-    public Component getMessageTooManyArguments(Component code) {
+    public Component getMessageTooManyArguments(Code code) {
         return this.getSenderPlugin().append(Component.text("Too many arguments (Code: ", ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    public Component getMessageTooFewArguments(Component code) {
+    public Component getMessageTooFewArguments(Code code) {
         return this.getSenderPlugin().append(Component.text("Too few arguments (Code: ", ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    public Component getMessageTooFewManyArguments(Component code) {
+    public Component getMessageTooFewManyArguments(Code code) {
         return this.getSenderPlugin().append(Component.text("Too few/many arguments (Code: ").color(ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
     //permission
-    public Component getMessageNoPermission(Component code) {
+    public Component getMessageNoPermission(Code code) {
         return this.getSenderPlugin().append(Component.text("No permission (Code: ").color(ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    public Component getMessageNoPermissionsRank(Component code) {
+    public Component getMessageNoPermissionsRank(Code code) {
         return this.getSenderPlugin().append(Component.text("No permission, your rank is too low (Code: ").color(ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    public Component getMessageOnlyPlayer(Component code) {
+    public Component getMessageOnlyPlayer(Code code) {
         return this.getSenderPlugin().append(Component.text("You must be a player (Code: ").color(ExTextColor.WARNING))
-                .append(code)
+                .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 

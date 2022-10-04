@@ -10,8 +10,6 @@ import java.util.UUID;
 public abstract class Argument {
 
     public static final String SPACE = "\\";
-
-
     protected final Sender sender;
     protected String string;
 
@@ -37,11 +35,11 @@ public abstract class Argument {
         this.string = this.string + toAdd;
     }
 
+    //type check
+
     public String toSpacedString() {
         return this.string.replace(SPACE, " ");
     }
-
-    //type check
 
     public boolean isInt(boolean sendMessage) {
         try {
@@ -54,7 +52,6 @@ public abstract class Argument {
         }
         return true;
     }
-
 
     public boolean isFloat(boolean sendMessage) {
         try {
@@ -221,7 +218,7 @@ public abstract class Argument {
         } catch (IllegalArgumentException ignored) {
         }
         if (sendMessage) {
-            sender.sendMessageFormatException(this.string, 732, "server-status", "online");
+            sender.sendMessageServerStatusNotExist(this.string);
         }
         return false;
     }
@@ -237,7 +234,7 @@ public abstract class Argument {
         } catch (IllegalArgumentException ignored) {
         }
         if (sendMessage) {
-            sender.sendMessageFormatException(this.string, 733, "permission-status", "online");
+            sender.sendMessagePermissionStatusNotExist(this.string);
         }
         return false;
     }
@@ -253,7 +250,7 @@ public abstract class Argument {
         } catch (IllegalArgumentException ignored) {
         }
         if (sendMessage) {
-            sender.sendMessageFormatException(this.string, 734, "ticket-status", "closed");
+            sender.sendMessageTicketStatusNotExist(this.string);
         }
         return false;
     }

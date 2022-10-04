@@ -1,7 +1,6 @@
 package de.timesnake.library.extension.util.chat;
 
 import de.timesnake.library.basic.util.chat.ChatColor;
-import de.timesnake.library.basic.util.chat.Plugin;
 import de.timesnake.library.extension.util.cmd.Argument;
 import de.timesnake.library.extension.util.cmd.Arguments;
 import de.timesnake.library.extension.util.cmd.Sender;
@@ -42,6 +41,7 @@ public interface Chat {
         return Component.text(plugin.getName(), NamedTextColor.DARK_AQUA).append(getSplitter());
     }
 
+    @Deprecated
     static Component getMessageCode(String codeType, int code, Plugin plugin) {
         return Component.text("(Code: " + codeType + code + " " + plugin.getCode() + ")");
     }

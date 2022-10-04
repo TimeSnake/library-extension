@@ -1,6 +1,7 @@
 package de.timesnake.library.extension.util.cmd;
 
-import de.timesnake.library.basic.util.chat.Plugin;
+
+import de.timesnake.library.extension.util.chat.Plugin;
 
 public class ExCommand<Sender extends de.timesnake.library.extension.util.cmd.Sender,
         Argument extends de.timesnake.library.extension.util.cmd.Argument> {
