@@ -1,6 +1,8 @@
 package de.timesnake.library.extension.util.permission;
 
 import de.timesnake.database.util.group.DbPermGroup;
+import de.timesnake.library.extension.util.player.UserList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,7 +16,7 @@ public abstract class PermGroup<User> implements Comparable<PermGroup<?>> {
     protected final String name;
     protected final Integer rank;
     protected final Set<ExPermission> permissions = new HashSet<>();
-    protected final Set<User> users = new HashSet<>();
+    protected final Collection<User> users;
 
     public PermGroup(DbPermGroup database) {
         this.database = database;
@@ -23,12 +25,15 @@ public abstract class PermGroup<User> implements Comparable<PermGroup<?>> {
 
         this.rank = dbLocal.getRank();
         this.name = dbLocal.getName();
+        this.users = new UserList<>();
     }
 
+    @NotNull
     public String getName() {
         return name;
     }
 
+    @NotNull
     public Integer getRank() {
         return rank;
     }
@@ -41,10 +46,12 @@ public abstract class PermGroup<User> implements Comparable<PermGroup<?>> {
         this.users.remove(user);
     }
 
-    public Set<User> getUsers() {
+    @NotNull
+    public Collection<User> getUsers() {
         return this.users;
     }
 
+    @NotNull
     public Collection<? extends ExPermission> getPermissions() {
         return new HashSet<>(this.permissions);
     }

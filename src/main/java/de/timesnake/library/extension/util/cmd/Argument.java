@@ -355,12 +355,22 @@ public abstract class Argument {
                 Status.Ticket.parseValue(this.string.toLowerCase()) : Status.Ticket.parseValue(this.string);
     }
 
-    public boolean equals(String string) {
-        return this.string.equals(string);
+    public boolean equals(String... string) {
+        for (String s : string) {
+            if (this.string.equals(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public boolean equalsIgnoreCase(String string) {
-        return this.string.equalsIgnoreCase(string);
+    public boolean equalsIgnoreCase(String... string) {
+        for (String s : string) {
+            if (this.string.equalsIgnoreCase(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean contains(String string) {
