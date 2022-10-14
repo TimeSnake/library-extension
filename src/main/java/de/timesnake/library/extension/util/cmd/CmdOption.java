@@ -18,22 +18,9 @@
 
 package de.timesnake.library.extension.util.cmd;
 
-public class Argument extends ArgumentBasis {
+public class CmdOption extends ArgumentBasis {
 
-    public static final String SPACE = "\\";
-
-    public Argument(Sender sender, String string) {
-        super(sender, string);
+    public CmdOption(Sender sender, String value) {
+        super(sender, value);
     }
-
-    protected void addString(String toAdd) {
-        this.string = this.string + toAdd;
-    }
-
-    //type check
-
-    public String toSpacedString() {
-        return this.string.replace(SPACE, " ");
-    }
-
 }

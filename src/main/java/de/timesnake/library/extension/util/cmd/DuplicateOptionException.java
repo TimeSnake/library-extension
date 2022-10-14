@@ -18,22 +18,15 @@
 
 package de.timesnake.library.extension.util.cmd;
 
-public class Argument extends ArgumentBasis {
+public class DuplicateOptionException extends RuntimeException {
 
-    public static final String SPACE = "\\";
+    private final String name;
 
-    public Argument(Sender sender, String string) {
-        super(sender, string);
+    public DuplicateOptionException(String name) {
+        this.name = name;
     }
 
-    protected void addString(String toAdd) {
-        this.string = this.string + toAdd;
+    public String getName() {
+        return name;
     }
-
-    //type check
-
-    public String toSpacedString() {
-        return this.string.replace(SPACE, " ");
-    }
-
 }

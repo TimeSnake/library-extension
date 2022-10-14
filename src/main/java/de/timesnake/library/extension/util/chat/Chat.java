@@ -128,7 +128,13 @@ public interface Chat {
     }
 
     static Arguments<Argument> createArguments(Sender sender, Argument... args) {
-        return new Arguments<>(sender, args);
+        return new Arguments<>(sender, args) {
+
+            @Override
+            public Argument createArgument(Sender sender, String arg) {
+                return new Argument(sender, arg) {};
+            }
+        };
     }
 
     static float roundCoinAmount(float coins) {

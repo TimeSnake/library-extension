@@ -18,22 +18,20 @@
 
 package de.timesnake.library.extension.util.cmd;
 
-public class Argument extends ArgumentBasis {
+public class ArgumentParseException extends RuntimeException {
 
-    public static final String SPACE = "\\";
+    private int errorOffset = 0;
 
-    public Argument(Sender sender, String string) {
-        super(sender, string);
+    public ArgumentParseException(String message) {
+        super(message);
     }
 
-    protected void addString(String toAdd) {
-        this.string = this.string + toAdd;
+    public ArgumentParseException(String message, int errorOffset) {
+        super(message);
+        this.errorOffset = errorOffset;
     }
 
-    //type check
-
-    public String toSpacedString() {
-        return this.string.replace(SPACE, " ");
+    public int getErrorOffset() {
+        return errorOffset;
     }
-
 }
