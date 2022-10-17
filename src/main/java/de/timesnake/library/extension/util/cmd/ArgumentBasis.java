@@ -377,6 +377,24 @@ public class ArgumentBasis {
         }
     }
 
+    public Integer toBoundedIntOrExit(int lowerBound, int upperBound, boolean sendMessage) {
+        try {
+            int i = Integer.parseInt(this.string);
+            if (i < lowerBound || i > upperBound) {
+                if (sendMessage) {
+                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound, "" + upperBound);
+                }
+                throw new CommandExitException();
+            }
+            return i;
+        } catch (NumberFormatException e) {
+            if (sendMessage) {
+                sender.sendMessageNoInteger(this.string);
+            }
+            throw new CommandExitException();
+        }
+    }
+
     public Float toFloatOrExit(boolean sendMessage) {
         try {
             return Float.parseFloat(this.string);
@@ -388,9 +406,45 @@ public class ArgumentBasis {
         }
     }
 
+    public Float toBoundedFloatOrExit(float lowerBound, float upperBound, boolean sendMessage) {
+        try {
+            float f = Float.parseFloat(this.string);
+            if (f < lowerBound || f > upperBound) {
+                if (sendMessage) {
+                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound, "" + upperBound);
+                }
+                throw new CommandExitException();
+            }
+            return f;
+        } catch (NumberFormatException e) {
+            if (sendMessage) {
+                sender.sendMessageNoFloat(this.string);
+            }
+            throw new CommandExitException();
+        }
+    }
+
     public Double toDoubleOrExit(boolean sendMessage) {
         try {
             return Double.parseDouble(this.string);
+        } catch (NumberFormatException e) {
+            if (sendMessage) {
+                sender.sendMessageNoDouble(this.string);
+            }
+            throw new CommandExitException();
+        }
+    }
+
+    public Double toBoundedDoubleOrExit(double lowerBound, double upperBound, boolean sendMessage) {
+        try {
+            double d = Double.parseDouble(this.string);
+            if (d < lowerBound || d > upperBound) {
+                if (sendMessage) {
+                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound, "" + upperBound);
+                }
+                throw new CommandExitException();
+            }
+            return d;
         } catch (NumberFormatException e) {
             if (sendMessage) {
                 sender.sendMessageNoDouble(this.string);

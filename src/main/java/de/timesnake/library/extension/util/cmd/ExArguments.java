@@ -29,8 +29,10 @@ public abstract class ExArguments<Argument extends de.timesnake.library.extensio
     public ExArguments(Sender sender, String[] args, boolean allowDuplicateOptions) {
         super(sender);
 
+        this.args = new LinkedList<>();
         for (String arg : args) {
             if (arg.startsWith("--")) {
+                arg = arg.replaceFirst("--", "");
                 String[] argWithValue = arg.split("=");
                 if (argWithValue.length != 2) {
                     throw new ArgumentParseException("Error while parsing option", arg.indexOf('='));
@@ -51,6 +53,7 @@ public abstract class ExArguments<Argument extends de.timesnake.library.extensio
                     throw new DuplicateOptionException(name);
                 }
             } else if (arg.startsWith("-")) {
+                arg = arg.replaceFirst("-", "");
                 String[] argWithValue = arg.split("=");
 
                 // only flags
@@ -69,12 +72,12 @@ public abstract class ExArguments<Argument extends de.timesnake.library.extensio
                     }
 
                     char[] flags = argWithValue[0].toCharArray();
-                    String optionName = argWithValue[flags.length - 1].toLowerCase();
+                    char optionName = flags[flags.length - 1];
                     for (int f = 0; f < flags.length - 1; f++) {
                         this.flags.add(flags[f]);
                     }
 
-                    this.options.put(optionName, new CmdOption(sender, value));
+                    this.options.put(String.valueOf(optionName), new CmdOption(sender, value));
                 } else {
                     throw new ArgumentParseException("Error while parsing options, to many values", arg.lastIndexOf('='));
                 }
@@ -99,11 +102,11 @@ public abstract class ExArguments<Argument extends de.timesnake.library.extensio
     }
 
     public Optional<CmdOption> getOption(String name) {
-        return Optional.ofNullable(this.options.get(name));
+        return Optional.ofNullable(this.options.get(name.toLowerCase()));
     }
 
     public CmdOption getOptionOrElse(String name, CmdOption fallback) {
-        return Optional.ofNullable(this.options.get(name)).orElse(fallback);
+        return Optional.ofNullable(this.options.get(name.toLowerCase())).orElse(fallback);
     }
 
     public Iterator<Argument> iterator() {

@@ -65,6 +65,7 @@ public abstract class Sender {
     public static final Code TOO_FEW_MANY_ARGS = new Code.Help(Plugin.SYSTEM, "afm", 1, "Too few/many arguments");
     public static final Code NO_PERMISSION_RANK = new Code.Permission(Plugin.SYSTEM, "prk", 1, "Rank too low");
     public static final Code ONLY_PLAYER = new Code.Help(Plugin.SYSTEM, "pop", 1, "Only player");
+    public static final Code NUMBER_OUT_OF_BOUNDS = new Code.Help(Plugin.SYSTEM, "nob", 1, "number out of bounds");
 
     protected final CommandSender cmdSender;
     protected final Plugin plugin;
@@ -395,6 +396,11 @@ public abstract class Sender {
         this.sendSystemMessage(DOUBLE_NON, " [ArgsFormat]");
     }
 
+    public void sendMessageNumberOutOfBounds(String string, String lowerBound, String upperBound) {
+        cmdSender.sendMessage(this.getMessageNumberOutOfBoundsException(string, NUMBER_OUT_OF_BOUNDS, lowerBound, upperBound));
+        this.sendSystemMessage(NUMBER_OUT_OF_BOUNDS, " [ArgsBound]");
+    }
+
     public void sendMessageNoChatColor(String string) {
         cmdSender.sendMessage(this.getMessageFormatException(string, CHAT_COLOR_NON, "chatcolor", "chatcolor: DARK_BLUE"));
         this.sendSystemMessage(CHAT_COLOR_NON, " [ArgsFormat]");
@@ -535,6 +541,13 @@ public abstract class Sender {
     public Component getMessageFormatException(String string, Code code, String type, String example) {
         return this.getSenderPlugin().append(Component.text(string, ExTextColor.VALUE))
                 .append(Component.text(" isn't a " + type + " (" + example + ") (Code: ", ExTextColor.WARNING))
+                .append(code.asComponent(ExTextColor.WARNING))
+                .append(Component.text(")", ExTextColor.WARNING));
+    }
+
+    public Component getMessageNumberOutOfBoundsException(String string, Code code, String lowerBound, String upperBound) {
+        return this.getSenderPlugin().append(Component.text(string, ExTextColor.VALUE))
+                .append(Component.text(" isn't between " + lowerBound + "and" + upperBound + " (Code: ", ExTextColor.WARNING))
                 .append(code.asComponent(ExTextColor.WARNING))
                 .append(Component.text(")", ExTextColor.WARNING));
     }
