@@ -76,6 +76,10 @@ public abstract class Sender {
     }
 
     public boolean hasPermission(Code.Permission code) {
+        if (code == null) {
+            return false;
+        }
+
         if (cmdSender.hasPermission(code.getPermission())) {
             return true;
         }
@@ -104,6 +108,10 @@ public abstract class Sender {
     }
 
     public boolean hasPermission(Code.Permission code, boolean sendMessage) {
+        if (code == null) {
+            return false;
+        }
+
         if (cmdSender.hasPermission(code.getPermission())) {
             return true;
         }
