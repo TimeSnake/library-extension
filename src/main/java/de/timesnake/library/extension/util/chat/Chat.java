@@ -1,5 +1,5 @@
 /*
- * library-extension.main
+ * workspace.library-extension.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -280,7 +280,7 @@ public interface Chat {
             sb.append(obj.toString()).append(", ");
         }
 
-        sb.delete(sb.length() - 2, sb.length() - 1);
+        sb.delete(sb.length() - 2, sb.length());
 
         return sb.toString();
     }
