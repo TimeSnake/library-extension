@@ -1,5 +1,5 @@
 /*
- * library-extension.main
+ * workspace.library-extension.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -219,11 +219,11 @@ public class ArgumentBasis {
     }
 
     public boolean isServerStatus(boolean sendMessage) {
-        if (Status.Server.parseValue(this.string.toLowerCase()) != null) {
+        if (Status.Server.valueOf(this.string.toLowerCase()) != null) {
             return true;
         }
         try {
-            if (Status.Server.parseValue(this.string) != null) {
+            if (Status.Server.valueOf(this.string) != null) {
                 return true;
             }
         } catch (IllegalArgumentException ignored) {
@@ -235,11 +235,11 @@ public class ArgumentBasis {
     }
 
     public boolean isPermissionStatus(boolean sendMessage) {
-        if (Status.Permission.parseValue(this.string.toLowerCase()) != null) {
+        if (Status.Permission.valueOf(this.string.toLowerCase()) != null) {
             return true;
         }
         try {
-            if (Status.Permission.parseValue(this.string) != null) {
+            if (Status.Permission.valueOf(this.string) != null) {
                 return true;
             }
         } catch (IllegalArgumentException ignored) {
@@ -251,11 +251,11 @@ public class ArgumentBasis {
     }
 
     public boolean isTicketStatus(boolean sendMessage) {
-        if (Status.Ticket.parseValue(this.string.toLowerCase()) != null) {
+        if (Status.Ticket.valueOf(this.string.toLowerCase()) != null) {
             return true;
         }
         try {
-            if (Status.Ticket.parseValue(this.string) != null) {
+            if (Status.Ticket.valueOf(this.string) != null) {
                 return true;
             }
         } catch (IllegalArgumentException ignored) {
@@ -352,18 +352,18 @@ public class ArgumentBasis {
     }
 
     public Status.Permission toPermissionStatus() {
-        return Status.Permission.parseValue(this.string.toLowerCase()) != null ?
-                Status.Permission.parseValue(this.string.toLowerCase()) : Status.Permission.parseValue(this.string);
+        return Status.Permission.valueOf(this.string.toLowerCase()) != null ?
+                Status.Permission.valueOf(this.string.toLowerCase()) : Status.Permission.valueOf(this.string);
     }
 
     public Status.Server toServerStatus() {
-        return Status.Server.parseValue(this.string.toLowerCase()) != null ?
-                Status.Server.parseValue(this.string.toLowerCase()) : Status.Server.parseValue(this.string);
+        return Status.Server.valueOf(this.string.toLowerCase()) != null ?
+                Status.Server.valueOf(this.string.toLowerCase()) : Status.Server.valueOf(this.string);
     }
 
     public Status.Ticket toTicketStatus() {
-        return Status.Ticket.parseValue(this.string.toLowerCase()) != null ?
-                Status.Ticket.parseValue(this.string.toLowerCase()) : Status.Ticket.parseValue(this.string);
+        return Status.Ticket.valueOf(this.string.toLowerCase()) != null ?
+                Status.Ticket.valueOf(this.string.toLowerCase()) : Status.Ticket.valueOf(this.string);
     }
 
     public Integer toIntOrExit(boolean sendMessage) {
@@ -477,7 +477,7 @@ public class ArgumentBasis {
     }
 
     public Status.Server toServerStatusOrExit(boolean sendMessage) {
-        Status.Server status = Status.Server.parseValue(this.string.toLowerCase());
+        Status.Server status = Status.Server.valueOf(this.string.toLowerCase());
         if (status != null) {
             return status;
         }
@@ -489,7 +489,7 @@ public class ArgumentBasis {
     }
 
     public Status.Permission toPermissionStatusOrExit(boolean sendMessage) {
-        Status.Permission status = Status.Permission.parseValue(this.string.toLowerCase());
+        Status.Permission status = Status.Permission.valueOf(this.string.toLowerCase());
         if (status != null) {
             return status;
         }
@@ -500,7 +500,7 @@ public class ArgumentBasis {
     }
 
     public Status.Ticket toTicketStatusOrExit(boolean sendMessage) {
-        Status.Ticket status = Status.Ticket.parseValue(this.string.toLowerCase());
+        Status.Ticket status = Status.Ticket.valueOf(this.string.toLowerCase());
         if (status != null) {
             return status;
         }
