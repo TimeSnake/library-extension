@@ -11,10 +11,11 @@ public class ExCommand<Sender extends de.timesnake.library.extension.util.cmd.Se
         Argument extends de.timesnake.library.extension.util.cmd.Argument> {
 
     private final String command;
-    private final CommandListener<Sender, Argument> listener;
+    private final CommandListenerBasis<? extends Sender, ? extends Argument> listener;
     private final Plugin plugin;
 
-    public ExCommand(String command, CommandListener<Sender, Argument> listener, Plugin plugin) {
+    public ExCommand(String command,
+            CommandListenerBasis<? extends Sender, ? extends Argument> listener, Plugin plugin) {
         this.command = command;
         this.listener = listener;
         this.plugin = plugin;
@@ -24,7 +25,7 @@ public class ExCommand<Sender extends de.timesnake.library.extension.util.cmd.Se
         return command;
     }
 
-    public CommandListener<Sender, Argument> getListener() {
+    public CommandListenerBasis<? extends Sender, ? extends Argument> getListener() {
         return listener;
     }
 
