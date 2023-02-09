@@ -4,7 +4,13 @@
 
 package de.timesnake.library.extension.util.cmd;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
 
 public abstract class ArgumentsBasis<Argument extends de.timesnake.library.extension.util.cmd.Argument>
         implements Iterable<Argument> {
@@ -114,6 +120,12 @@ public abstract class ArgumentsBasis<Argument extends de.timesnake.library.exten
         return new ArrayList<>(Arrays.asList(this.toMessage(beginIndex).split("\n")));
     }
 
+    public void assertElseExit(Function<ArgumentsBasis<Argument>, Boolean> function) {
+        if (!function.apply(this)) {
+            throw new CommandExitException();
+        }
+    }
+
     /**
      * @param length
      * @param sendMessage send help message when false
@@ -133,39 +145,11 @@ public abstract class ArgumentsBasis<Argument extends de.timesnake.library.exten
      * @param sendMessage send help message when false
      * @return
      */
-    public boolean isLengthHigher(int length, boolean sendMessage) {
-        if (this.args.size() > length) {
-            return true;
-        } else if (sendMessage) {
-            this.sender.sendMessageTooFewArguments();
-        }
-        return false;
-    }
-
-    /**
-     * @param length
-     * @param sendMessage send help message when false
-     * @return
-     */
     public boolean isLengthEquals(int length, boolean sendMessage) {
         if (this.args.size() == length) {
             return true;
         } else if (sendMessage) {
             this.sender.sendMessageTooFewManyArguments();
-        }
-        return false;
-    }
-
-    /**
-     * @param length
-     * @param sendMessage send help message when false
-     * @return
-     */
-    public boolean isLengthLower(int length, boolean sendMessage) {
-        if (this.args.size() < length) {
-            return true;
-        } else if (sendMessage) {
-            sender.sendMessageTooManyArguments();
         }
         return false;
     }

@@ -7,9 +7,9 @@ package de.timesnake.library.extension.util.cmd;
 import de.timesnake.database.util.Database;
 import de.timesnake.database.util.user.DbUser;
 import de.timesnake.library.basic.util.Status;
-import net.kyori.adventure.text.Component;
-
 import java.util.UUID;
+import java.util.function.Function;
+import net.kyori.adventure.text.Component;
 
 public class ArgumentBasis {
 
@@ -36,6 +36,12 @@ public class ArgumentBasis {
     @Override
     public String toString() {
         return this.string;
+    }
+
+    public void assertElseExit(Function<ArgumentBasis, Boolean> function) {
+        if (!function.apply(this)) {
+            throw new CommandExitException();
+        }
     }
 
     public boolean isInt(boolean sendMessage) {
@@ -113,7 +119,8 @@ public class ArgumentBasis {
         }
         if (time != null) {
             if (time.length >= 2) {
-                if (new ArgumentTypeCheck(this.sender, time[0]).isHour(false) && new ArgumentTypeCheck(this.sender,
+                if (new ArgumentTypeCheck(this.sender, time[0]).isHour(false)
+                        && new ArgumentTypeCheck(this.sender,
                         time[1]).isMinute(false)) {
                     if (time.length == 3) {
                         if (new ArgumentTypeCheck(this.sender, time[2]).isSecond(false)) {
@@ -300,11 +307,17 @@ public class ArgumentBasis {
                                 ticks += 24000;
                             }
                             return ticks;
-                        } else sender.sendMessageNoMinute(arg1.getString());
-                    } else sender.sendMessageNoHour(arg0.getString());
+                        } else {
+                            sender.sendMessageNoMinute(arg1.getString());
+                        }
+                    } else {
+                        sender.sendMessageNoHour(arg0.getString());
+                    }
                 }
             }
-        } else sender.sendMessageNoTime(string);
+        } else {
+            sender.sendMessageNoTime(string);
+        }
         return 0;
     }
 
@@ -322,11 +335,17 @@ public class ArgumentBasis {
 
             String time = "";
 
-            if (hours < 10) time += "0" + hours;
-            else time += hours;
+            if (hours < 10) {
+                time += "0" + hours;
+            } else {
+                time += hours;
+            }
 
-            if (minutes < 10) time += ":0" + minutes;
-            else time += ":" + minutes;
+            if (minutes < 10) {
+                time += ":0" + minutes;
+            } else {
+                time += ":" + minutes;
+            }
 
             return time;
         }
@@ -339,17 +358,20 @@ public class ArgumentBasis {
 
     public Status.Permission toPermissionStatus() {
         return Status.Permission.valueOf(this.string.toLowerCase()) != null ?
-                Status.Permission.valueOf(this.string.toLowerCase()) : Status.Permission.valueOf(this.string);
+                Status.Permission.valueOf(this.string.toLowerCase())
+                : Status.Permission.valueOf(this.string);
     }
 
     public Status.Server toServerStatus() {
         return Status.Server.valueOf(this.string.toLowerCase()) != null ?
-                Status.Server.valueOf(this.string.toLowerCase()) : Status.Server.valueOf(this.string);
+                Status.Server.valueOf(this.string.toLowerCase())
+                : Status.Server.valueOf(this.string);
     }
 
     public Status.Ticket toTicketStatus() {
         return Status.Ticket.valueOf(this.string.toLowerCase()) != null ?
-                Status.Ticket.valueOf(this.string.toLowerCase()) : Status.Ticket.valueOf(this.string);
+                Status.Ticket.valueOf(this.string.toLowerCase())
+                : Status.Ticket.valueOf(this.string);
     }
 
     public Integer toIntOrExit(boolean sendMessage) {
@@ -368,7 +390,8 @@ public class ArgumentBasis {
             int i = Integer.parseInt(this.string);
             if (i < lowerBound || i > upperBound) {
                 if (sendMessage) {
-                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound, "" + upperBound);
+                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound,
+                            "" + upperBound);
                 }
                 throw new CommandExitException();
             }
@@ -397,7 +420,8 @@ public class ArgumentBasis {
             float f = Float.parseFloat(this.string);
             if (f < lowerBound || f > upperBound) {
                 if (sendMessage) {
-                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound, "" + upperBound);
+                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound,
+                            "" + upperBound);
                 }
                 throw new CommandExitException();
             }
@@ -426,7 +450,8 @@ public class ArgumentBasis {
             double d = Double.parseDouble(this.string);
             if (d < lowerBound || d > upperBound) {
                 if (sendMessage) {
-                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound, "" + upperBound);
+                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound,
+                            "" + upperBound);
                 }
                 throw new CommandExitException();
             }
