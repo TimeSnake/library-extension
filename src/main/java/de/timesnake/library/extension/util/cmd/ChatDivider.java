@@ -4,8 +4,8 @@
 
 package de.timesnake.library.extension.util.cmd;
 
-import de.timesnake.library.basic.util.chat.ChatColor;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ChatColor;
+import de.timesnake.library.chat.ExTextColor;
 import net.kyori.adventure.text.Component;
 
 public class ChatDivider {

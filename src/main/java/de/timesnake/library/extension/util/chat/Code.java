@@ -6,7 +6,7 @@ package de.timesnake.library.extension.util.chat;
 
 import de.timesnake.library.basic.util.BuilderBasis;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
 import java.util.HashMap;
 import java.util.Map;
 import net.kyori.adventure.text.Component;
@@ -51,7 +51,7 @@ public class Code {
     }
 
     public String asStringCode() {
-        return " (Code: #" + this.code + ")";
+        return "#" + this.code;
     }
 
     public Plugin getPlugin() {

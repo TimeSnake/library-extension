@@ -4,8 +4,8 @@
 
 package de.timesnake.library.extension.util.chat;
 
-import de.timesnake.library.basic.util.chat.ChatColor;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ChatColor;
+import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.cmd.Argument;
 import de.timesnake.library.extension.util.cmd.Arguments;
 import de.timesnake.library.extension.util.cmd.Sender;

@@ -10,6 +10,7 @@ dependencies {
     compileOnly project(':database-api')
     compileOnly project(':channel-api')
     compileOnly project(':library-basic')
+    compileOnly project(':library-chat')
 
     compileOnly project.adventure_api
     compileOnly 'net.kyori:adventure-text-serializer-legacy:4.12.0'

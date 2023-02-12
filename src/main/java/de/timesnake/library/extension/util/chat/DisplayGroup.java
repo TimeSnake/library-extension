@@ -5,7 +5,7 @@
 package de.timesnake.library.extension.util.chat;
 
 import de.timesnake.database.util.group.DbDisplayGroup;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.player.UserList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

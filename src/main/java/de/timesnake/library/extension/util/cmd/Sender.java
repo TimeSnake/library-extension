@@ -8,7 +8,8 @@ package de.timesnake.library.extension.util.cmd;
 import de.timesnake.database.util.Database;
 import de.timesnake.database.util.group.DbPermGroup;
 import de.timesnake.database.util.user.DbUser;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
+import de.timesnake.library.chat.TimeDownParser;
 import de.timesnake.library.extension.util.chat.Chat;
 import de.timesnake.library.extension.util.chat.Code;
 import de.timesnake.library.extension.util.chat.Code.Builder;
@@ -179,10 +180,12 @@ public abstract class Sender {
 
     protected final CommandSender cmdSender;
     protected final Plugin plugin;
+    protected final TimeDownParser parser;
 
-    public Sender(CommandSender cmdSender, Plugin plugin) {
+    public Sender(CommandSender cmdSender, Plugin plugin, TimeDownParser parser) {
         this.cmdSender = cmdSender;
         this.plugin = plugin;
+        this.parser = parser;
     }
 
     public boolean hasPermission(Code code) {
@@ -370,21 +373,17 @@ public abstract class Sender {
         return cmdSender.getName();
     }
 
-    @Deprecated
-    public void sendMessage(String message) {
-        this.cmdSender.sendMessage(message);
+    public void sendTDMessage(String message) {
+        this.cmdSender.sendMessage(this.parser.parse2Component(message));
     }
 
     public void sendMessage(Component message) {
         this.cmdSender.sendMessage(message);
     }
 
-    //already exist
-
-    @Deprecated
-    public void sendPluginMessage(String message) {
+    public void sendPluginTDMessage(String message) {
         this.cmdSender.sendMessage(Chat.getSenderPlugin(plugin)
-                .append(LegacyComponentSerializer.legacyAmpersand().deserialize(message)));
+                .append(this.parser.parse2Component(message)));
     }
 
     public void sendPluginMessage(Component message) {
@@ -394,8 +393,6 @@ public abstract class Sender {
     public CommandSender getCommandSender() {
         return this.cmdSender;
     }
-
-    //format exception
 
     public String getPluginName() {
         return this.plugin.getName();
@@ -417,11 +414,10 @@ public abstract class Sender {
     /**
      * @param command command without slash
      **/
-    @Deprecated
-    public void sendMessageCommandHelp(String text, String command) {
-        this.sendMessageCommandHelp(LegacyComponentSerializer.legacyAmpersand().deserialize(text)
+    public void sendTDMessageCommandHelp(String text, String command) {
+        this.sendMessageCommandHelp(this.parser.parse2Component(text)
                         .color(ExTextColor.PERSONAL),
-                LegacyComponentSerializer.legacyAmpersand().deserialize(command)
+                this.parser.parse2Component(command)
                         .color(ExTextColor.VALUE));
     }
 
@@ -436,8 +432,6 @@ public abstract class Sender {
                 .append(Component.text(" too few)", ExTextColor.WARNING)));
     }
 
-    //hint
-    //not exist
     public void sendMessageNotExist(String string, Code code, String type) {
         cmdSender.sendMessage(this.getMessageNotExist(string, code, type));
         this.sendSystemMessage(code, " [Args]");
@@ -605,7 +599,6 @@ public abstract class Sender {
         this.sendSystemMessage(ITEM_NAME_NON, " [ArgsFormat]");
     }
 
-    //argument amount
     public void sendMessageTooManyArguments() {
         cmdSender.sendMessage(this.getMessageTooManyArguments(TOO_MANY_ARGS));
         this.sendSystemMessage(TOO_MANY_ARGS, " [ArgsLength]");
@@ -636,7 +629,6 @@ public abstract class Sender {
         cmdSender.sendMessage(this.getMessageOnlyPlayer(ONLY_PLAYER));
     }
 
-    //chat
     public void sendMessageNoSpam() {
         cmdSender.sendMessage(this.getMessageNoSpam());
     }
@@ -669,7 +661,6 @@ public abstract class Sender {
                 .append(command.color(ExTextColor.VALUE));
     }
 
-    //hint
     public Component getMessageNotExist(String string, Code code, String type) {
         return this.getSenderPlugin().append(Component.text(" " + type + " (", ExTextColor.WARNING))
                 .append(Component.text(string, ExTextColor.VALUE))
@@ -686,7 +677,6 @@ public abstract class Sender {
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    //format exception
     public Component getMessageFormatException(String string, Code code, String type,
             String example) {
         return this.getSenderPlugin().append(Component.text(string, ExTextColor.VALUE))
@@ -706,7 +696,6 @@ public abstract class Sender {
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    //argument amount
     public Component getMessageTooManyArguments(Code code) {
         return this.getSenderPlugin()
                 .append(Component.text("Too many arguments (Code: ", ExTextColor.WARNING))
@@ -728,7 +717,6 @@ public abstract class Sender {
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-    //permission
     public Component getMessageNoPermission(Code code) {
         return this.getSenderPlugin()
                 .append(Component.text("No permission (Code: ").color(ExTextColor.WARNING))
@@ -751,8 +739,6 @@ public abstract class Sender {
                 .append(Component.text(")", ExTextColor.WARNING));
     }
 
-
-    //chat
     public Component getMessageNoSpam() {
         return this.getSenderPlugin()
                 .append(Component.text("This message is similar to your previous.")
