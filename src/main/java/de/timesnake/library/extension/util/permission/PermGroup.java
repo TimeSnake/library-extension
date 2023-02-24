@@ -5,13 +5,12 @@
 package de.timesnake.library.extension.util.permission;
 
 import de.timesnake.database.util.group.DbPermGroup;
-import de.timesnake.library.extension.util.player.UserList;
-import org.jetbrains.annotations.NotNull;
-
+import de.timesnake.library.extension.util.player.UserSet;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class PermGroup<User> implements Comparable<PermGroup<?>> {
 
@@ -29,7 +28,7 @@ public abstract class PermGroup<User> implements Comparable<PermGroup<?>> {
 
         this.rank = dbLocal.getRank();
         this.name = dbLocal.getName();
-        this.users = new UserList<>();
+        this.users = new UserSet<>();
     }
 
     @NotNull
@@ -74,8 +73,12 @@ public abstract class PermGroup<User> implements Comparable<PermGroup<?>> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PermGroup<?> permGroup)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PermGroup<?> permGroup)) {
+            return false;
+        }
         return Objects.equals(name, permGroup.name);
     }
 }

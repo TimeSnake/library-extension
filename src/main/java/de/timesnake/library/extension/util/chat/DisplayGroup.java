@@ -6,12 +6,11 @@ package de.timesnake.library.extension.util.chat;
 
 import de.timesnake.database.util.group.DbDisplayGroup;
 import de.timesnake.library.chat.ExTextColor;
-import de.timesnake.library.extension.util.player.UserList;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import de.timesnake.library.extension.util.player.UserSet;
 import java.util.Collection;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DisplayGroup<User> implements Comparable<DisplayGroup<?>> {
 
@@ -40,7 +39,7 @@ public class DisplayGroup<User> implements Comparable<DisplayGroup<?>> {
             this.prefixColor = ExTextColor.WHITE;
         }
 
-        this.users = new UserList<>();
+        this.users = new UserSet<>();
     }
 
     @NotNull
@@ -105,8 +104,12 @@ public class DisplayGroup<User> implements Comparable<DisplayGroup<?>> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DisplayGroup<?> displayGroup)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DisplayGroup<?> displayGroup)) {
+            return false;
+        }
         return Objects.equals(name, displayGroup.name);
     }
 }
