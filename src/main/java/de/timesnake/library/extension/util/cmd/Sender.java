@@ -188,6 +188,11 @@ public abstract class Sender {
         this.parser = parser;
     }
 
+    @Override
+    public int hashCode() {
+        return this.cmdSender.getName().hashCode();
+    }
+
     public boolean hasPermission(Code code) {
         return this.hasPermission(code, true);
     }
