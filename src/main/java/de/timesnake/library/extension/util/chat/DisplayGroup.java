@@ -67,6 +67,11 @@ public class DisplayGroup<User> implements Comparable<DisplayGroup<?>> {
         return this.prefixColor;
     }
 
+    @Nullable
+    public String getTDPrefixColor() {
+        return this.prefixColor != null ? this.prefixColor.getLegacyColor() : null;
+    }
+
     public void setPrefixColor(ExTextColor chatColor) {
         if (chatColor == null) {
             chatColor = ExTextColor.WHITE;

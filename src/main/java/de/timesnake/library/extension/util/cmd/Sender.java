@@ -17,6 +17,7 @@ import de.timesnake.library.extension.util.chat.Code.Type;
 import de.timesnake.library.extension.util.chat.Plugin;
 import de.timesnake.library.extension.util.player.User;
 import java.util.UUID;
+import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -393,6 +394,15 @@ public abstract class Sender {
 
     public void sendPluginMessage(Component message) {
         this.cmdSender.sendMessage(Chat.getSenderPlugin(plugin).append(message));
+    }
+
+    public void assertElseExitWith(boolean condition, Consumer<Sender> consumer) {
+        if (!condition) {
+            return;
+        }
+
+        consumer.accept(this);
+        throw new CommandExitException();
     }
 
     public CommandSender getCommandSender() {
