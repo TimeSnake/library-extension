@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class ArgumentsBasis<Argument extends de.timesnake.library.extension.util.cmd.Argument>
         implements Iterable<Argument> {
@@ -122,6 +123,18 @@ public abstract class ArgumentsBasis<Argument extends de.timesnake.library.exten
 
     public void assertElseExit(Function<ArgumentsBasis<Argument>, Boolean> function) {
         if (!function.apply(this)) {
+            throw new CommandExitException();
+        }
+    }
+
+    public void assertElseExit(Supplier<Boolean> supplier) {
+        if (!supplier.get()) {
+            throw new CommandExitException();
+        }
+    }
+
+    public void assertElseExit(boolean condition) {
+        if (!condition) {
             throw new CommandExitException();
         }
     }

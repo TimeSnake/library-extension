@@ -9,6 +9,8 @@ import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.cmd.Argument;
 import de.timesnake.library.extension.util.cmd.Arguments;
 import de.timesnake.library.extension.util.cmd.Sender;
+import java.util.Collection;
+import java.util.Iterator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
@@ -16,9 +18,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.Iterator;
 
 public interface Chat {
 
@@ -34,8 +33,16 @@ public interface Chat {
         return Component.text("----------", NamedTextColor.WHITE);
     }
 
+    static String getLineTDSeparator() {
+        return "----------";
+    }
+
     static Component getLongLineSeparator() {
         return Component.text("---------------", NamedTextColor.WHITE);
+    }
+
+    static String getLongLineTDSeparator() {
+        return "---------------";
     }
 
     static Component getDoubleLineSeparator() {
@@ -57,7 +64,8 @@ public interface Chat {
 
     static Component getTimeComponent(Integer time) {
         if (time >= 3600) {
-            return Component.text(time / 3600 + "h " + (time % 3600) / 60 + "min " + time % 60 + "s");
+            return Component.text(
+                    time / 3600 + "h " + (time % 3600) / 60 + "min " + time % 60 + "s");
         }
         if (time >= 60) {
             return Component.text(time / 60 + "min " + time % 60 + "s");
@@ -90,7 +98,8 @@ public interface Chat {
         return builder.build();
     }
 
-    static Component listToComponent(Collection<?> list, TextColor valueColor, TextColor separaterColor) {
+    static Component listToComponent(Collection<?> list, TextColor valueColor,
+            TextColor separaterColor) {
         if (list.size() == 0) {
             return Component.empty();
         }
@@ -118,7 +127,8 @@ public interface Chat {
 
             @Override
             public Argument createArgument(Sender sender, String arg) {
-                return new Argument(sender, arg) {};
+                return new Argument(sender, arg) {
+                };
             }
         };
     }
@@ -145,11 +155,14 @@ public interface Chat {
     @Deprecated
     static Component parseStringToComponent(String string) {
         TextComponent.Builder builder = Component.text();
-        if (string == null) return null;
+        if (string == null) {
+            return null;
+        }
         for (String part : string.split("§")) {
             if (part.length() != 0) {
                 if (part.length() == 1) {
-                    net.kyori.adventure.text.format.NamedTextColor color = parseChatColor(part.charAt(0));
+                    net.kyori.adventure.text.format.NamedTextColor color = parseChatColor(
+                            part.charAt(0));
                     TextDecoration decoration = parseChatColorDecoration(part.charAt(0));
                     if (color != null) {
                         builder.color(color);
@@ -160,7 +173,8 @@ public interface Chat {
                     }
                 } else {
                     part = part.substring(1);
-                    net.kyori.adventure.text.format.NamedTextColor color = parseChatColor(part.charAt(0));
+                    net.kyori.adventure.text.format.NamedTextColor color = parseChatColor(
+                            part.charAt(0));
                     TextDecoration decoration = parseChatColorDecoration(part.charAt(0));
                     if (color != null) {
                         builder.append(Component.text(part, color));
