@@ -397,11 +397,18 @@ public abstract class Sender {
     }
 
     public void assertElseExitWith(boolean condition, Consumer<Sender> consumer) {
-        if (!condition) {
+        if (condition) {
             return;
         }
 
         consumer.accept(this);
+        throw new CommandExitException();
+    }
+
+    public void assertElseExit(boolean condition) {
+        if (condition) {
+            return;
+        }
         throw new CommandExitException();
     }
 

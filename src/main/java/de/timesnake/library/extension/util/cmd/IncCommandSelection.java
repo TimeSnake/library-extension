@@ -46,7 +46,7 @@ public class IncCommandSelection {
     public Component toMessage(ExTextColor color) {
         Component msg = Component.text(this.title + ":", color);
         for (String value : this.values) {
-            msg = msg.append(Component.text("  " + value, ExTextColor.VALUE)
+            msg = msg.append(Component.text(" " + value + " ", ExTextColor.VALUE)
                     .clickEvent(ClickEvent.runCommand(
                             "/" + this.cmd + " " + this.option.getName() + " " + value)));
         }

@@ -48,6 +48,16 @@ public abstract class ArgumentsBasis<Argument extends de.timesnake.library.exten
         return null;
     }
 
+    public Argument getIfElseExit(int index, Function<Argument, Boolean> condition) {
+        if (this.args.size() > index) {
+            Argument arg = this.args.get(index);
+            if (condition.apply(arg)) {
+                return arg;
+            }
+        }
+        throw new CommandExitException();
+    }
+
     public int getLength() {
         return this.args.size();
     }
@@ -153,6 +163,12 @@ public abstract class ArgumentsBasis<Argument extends de.timesnake.library.exten
         return false;
     }
 
+    public void isLengthHigherEqualsElseExit(int length, boolean sendMessage) {
+        if (!this.isLengthHigherEquals(length, sendMessage)) {
+            throw new CommandExitException();
+        }
+    }
+
     /**
      * @param length
      * @param sendMessage send help message when false
@@ -167,6 +183,12 @@ public abstract class ArgumentsBasis<Argument extends de.timesnake.library.exten
         return false;
     }
 
+    public void isLengthEqualsElseExit(int length, boolean sendMessage) {
+        if (!this.isLengthEquals(length, sendMessage)) {
+            throw new CommandExitException();
+        }
+    }
+
     /**
      * @param length
      * @param sendMessage send help message when false
@@ -179,5 +201,11 @@ public abstract class ArgumentsBasis<Argument extends de.timesnake.library.exten
             this.sender.sendMessageTooManyArguments();
         }
         return false;
+    }
+
+    public void isLengthLowerEqualsElseExit(int length, boolean sendMessage) {
+        if (!this.isLengthLowerEquals(length, sendMessage)) {
+            throw new CommandExitException();
+        }
     }
 }

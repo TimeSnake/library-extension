@@ -7,11 +7,14 @@ package de.timesnake.library.extension.util.cmd;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.cmd.IncCommandSelection.Builder;
 import java.util.Collection;
+import java.util.List;
 
 public abstract class IncCommandListener<S extends Sender, A extends Argument, C extends IncCommandContext>
         implements CommandListenerBasis<S, A> {
 
-    public abstract C onCommand(S sender, ExCommand<S, A> cmd);
+    public abstract C onCommand(S sender, ExCommand<S, A> cmd, Arguments<A> args);
+
+    public abstract List<String> getTabCompletion(ExCommand<S, A> cmd, Arguments<A> args);
 
     /**
      * @param sender

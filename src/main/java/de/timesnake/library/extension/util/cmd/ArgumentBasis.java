@@ -291,7 +291,7 @@ public class ArgumentBasis {
         } else if (this.string.contains(";")) {
             time = string.split(";");
         } else if (this.string.contains(".")) {
-            time = string.split(".");
+            time = string.split("\\.");
         }
         if (time != null) {
             if (time.length == 2) {
@@ -390,8 +390,8 @@ public class ArgumentBasis {
             int i = Integer.parseInt(this.string);
             if (i < lowerBound || i > upperBound) {
                 if (sendMessage) {
-                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound,
-                            "" + upperBound);
+                    sender.sendMessageNumberOutOfBounds(this.string, String.valueOf(lowerBound),
+                            String.valueOf(upperBound));
                 }
                 throw new CommandExitException();
             }
@@ -420,8 +420,8 @@ public class ArgumentBasis {
             float f = Float.parseFloat(this.string);
             if (f < lowerBound || f > upperBound) {
                 if (sendMessage) {
-                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound,
-                            "" + upperBound);
+                    sender.sendMessageNumberOutOfBounds(this.string, String.valueOf(lowerBound),
+                            String.valueOf(upperBound));
                 }
                 throw new CommandExitException();
             }
@@ -450,8 +450,8 @@ public class ArgumentBasis {
             double d = Double.parseDouble(this.string);
             if (d < lowerBound || d > upperBound) {
                 if (sendMessage) {
-                    sender.sendMessageNumberOutOfBounds(this.string, "" + lowerBound,
-                            "" + upperBound);
+                    sender.sendMessageNumberOutOfBounds(this.string, String.valueOf(lowerBound),
+                            String.valueOf(upperBound));
                 }
                 throw new CommandExitException();
             }
