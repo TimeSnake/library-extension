@@ -1,20 +1,20 @@
 repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url = uri 'https://repo.maven.apache.org/maven2/'
-    }
+  mavenLocal()
+  mavenCentral()
+  maven {
+    url = uri 'https://repo.maven.apache.org/maven2/'
+  }
 }
 
 dependencies {
-    compileOnly project(':database-api')
-    compileOnly project(':channel-api')
-    compileOnly project(':library-basic')
-    compileOnly project(':library-chat')
+  compileOnly project(':database-api')
+  compileOnly project(':channel-api')
+  compileOnly project(':library-basic')
+  compileOnly project(':library-chat')
 
-    compileOnly project.adventure_api
-    compileOnly 'net.kyori:adventure-text-serializer-legacy:4.12.0'
-    compileOnly 'net.kyori:adventure-text-serializer-plain:4.12.0'
+  compileOnly project.adventure_api
+  compileOnly 'net.kyori:adventure-text-serializer-legacy:4.12.0'
+  compileOnly 'net.kyori:adventure-text-serializer-plain:4.12.0'
 }
 
 group = project.group
