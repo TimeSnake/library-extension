@@ -10,14 +10,14 @@ import java.util.Map;
 
 public class UserMap<User, Value> extends HashMap<User, Value> {
 
-    public static final LinkedList<UserMap<?, ?>> MAPS = new LinkedList<>();
+  public static final LinkedList<UserMap<?, ?>> MAPS = new LinkedList<>();
 
-    public UserMap() {
-        MAPS.add(this);
-    }
+  public UserMap() {
+    MAPS.add(this);
+  }
 
-    public UserMap(Map<? extends User, Value> map) {
-        super(map);
-        MAPS.add(this);
-    }
+  public UserMap(Map<? extends User, Value> map) {
+    super(map);
+    MAPS.add(this);
+  }
 }

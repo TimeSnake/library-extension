@@ -5,4 +5,5 @@
 package de.timesnake.library.extension.util.cmd;
 
 public class CmdFlag {
+
 }

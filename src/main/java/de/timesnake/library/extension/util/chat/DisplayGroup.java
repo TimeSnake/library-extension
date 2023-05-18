@@ -14,108 +14,108 @@ import org.jetbrains.annotations.Nullable;
 
 public class DisplayGroup<User> implements Comparable<DisplayGroup<?>> {
 
-    public static final int MAX_PREFIX_LENGTH = 2;
+  public static final int MAX_PREFIX_LENGTH = 2;
 
-    protected final DbDisplayGroup database;
+  protected final DbDisplayGroup database;
 
-    protected final String name;
-    protected final Integer rank;
-    protected final boolean showAlways;
-    protected final Collection<User> users;
-    protected String prefix;
-    protected ExTextColor prefixColor;
+  protected final String name;
+  protected final Integer rank;
+  protected final boolean showAlways;
+  protected final Collection<User> users;
+  protected String prefix;
+  protected ExTextColor prefixColor;
 
-    public DisplayGroup(DbDisplayGroup database) {
-        this.database = database;
-        DbDisplayGroup dbLocal = database.toLocal();
+  public DisplayGroup(DbDisplayGroup database) {
+    this.database = database;
+    DbDisplayGroup dbLocal = database.toLocal();
 
-        this.name = dbLocal.getName();
-        this.rank = dbLocal.getRank();
-        this.prefix = dbLocal.getPrefix();
-        this.showAlways = dbLocal.showAlways();
+    this.name = dbLocal.getName();
+    this.rank = dbLocal.getRank();
+    this.prefix = dbLocal.getPrefix();
+    this.showAlways = dbLocal.showAlways();
 
-        this.prefixColor = database.getChatColor();
-        if (this.prefixColor == null) {
-            this.prefixColor = ExTextColor.WHITE;
-        }
-
-        this.users = new UserSet<>();
+    this.prefixColor = database.getChatColor();
+    if (this.prefixColor == null) {
+      this.prefixColor = ExTextColor.WHITE;
     }
 
-    @NotNull
-    public String getName() {
-        return this.name;
-    }
+    this.users = new UserSet<>();
+  }
 
-    @NotNull
-    public Integer getRank() {
-        return this.rank;
-    }
+  @NotNull
+  public String getName() {
+    return this.name;
+  }
 
-    @Nullable
-    public String getPrefix() {
-        return this.prefix;
-    }
+  @NotNull
+  public Integer getRank() {
+    return this.rank;
+  }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-        this.database.setPrefix(prefix);
-    }
+  @Nullable
+  public String getPrefix() {
+    return this.prefix;
+  }
 
-    @Nullable
-    public ExTextColor getPrefixColor() {
-        return this.prefixColor;
-    }
+  public void setPrefix(String prefix) {
+    this.prefix = prefix;
+    this.database.setPrefix(prefix);
+  }
 
-    @Nullable
-    public String getTDPrefixColor() {
-        return this.prefixColor != null ? "§" + this.prefixColor.getLegacyToken() : null;
-    }
+  @Nullable
+  public ExTextColor getPrefixColor() {
+    return this.prefixColor;
+  }
 
-    public void setPrefixColor(ExTextColor chatColor) {
-        if (chatColor == null) {
-            chatColor = ExTextColor.WHITE;
-        }
-        this.prefixColor = chatColor;
-        this.database.setChatColor(chatColor);
-    }
+  @Nullable
+  public String getTDPrefixColor() {
+    return this.prefixColor != null ? "§" + this.prefixColor.getLegacyToken() : null;
+  }
 
-    public boolean isShowAlways() {
-        return showAlways;
+  public void setPrefixColor(ExTextColor chatColor) {
+    if (chatColor == null) {
+      chatColor = ExTextColor.WHITE;
     }
+    this.prefixColor = chatColor;
+    this.database.setChatColor(chatColor);
+  }
 
-    public void addUser(User user) {
-        this.users.add(user);
-    }
+  public boolean isShowAlways() {
+    return showAlways;
+  }
 
-    public void removeUser(User user) {
-        this.users.remove(user);
-    }
+  public void addUser(User user) {
+    this.users.add(user);
+  }
 
-    @NotNull
-    public Collection<User> getUsers() {
-        return this.users;
-    }
+  public void removeUser(User user) {
+    this.users.remove(user);
+  }
 
-    @Override
-    public int compareTo(DisplayGroup<?> o) {
-        return Integer.compare(this.getRank(), o.getRank());
-    }
+  @NotNull
+  public Collection<User> getUsers() {
+    return this.users;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(this.name);
-    }
+  @Override
+  public int compareTo(DisplayGroup<?> o) {
+    return Integer.compare(this.getRank(), o.getRank());
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DisplayGroup<?> displayGroup)) {
-            return false;
-        }
-        return Objects.equals(name, displayGroup.name);
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.name);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (!(o instanceof DisplayGroup<?> displayGroup)) {
+      return false;
+    }
+    return Objects.equals(name, displayGroup.name);
+  }
 }
 

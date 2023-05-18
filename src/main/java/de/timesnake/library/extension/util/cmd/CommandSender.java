@@ -8,25 +8,25 @@ import net.kyori.adventure.text.Component;
 
 public interface CommandSender {
 
-    @Deprecated
-    void sendMessage(String s);
+  @Deprecated
+  void sendMessage(String s);
 
-    void sendMessage(Component s);
+  void sendMessage(Component s);
 
-    @Deprecated
-    void sendMessage(String[] strings);
+  @Deprecated
+  void sendMessage(String[] strings);
 
-    void sendMessage(Component[] components);
+  void sendMessage(Component[] components);
 
-    String getName();
+  String getName();
 
-    boolean hasPermission(String s);
+  boolean hasPermission(String s);
 
-    boolean isConsole();
+  boolean isConsole();
 
-    <User extends de.timesnake.library.extension.util.player.User> User getUser();
+  <User extends de.timesnake.library.extension.util.player.User> User getUser();
 
-    <Player> Player getPlayer();
+  <Player> Player getPlayer();
 }
 
 

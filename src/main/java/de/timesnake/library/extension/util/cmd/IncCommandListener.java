@@ -10,30 +10,30 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class IncCommandListener<S extends Sender, A extends Argument, C extends IncCommandContext>
-        implements CommandListenerBasis<S, A> {
+    implements CommandListenerBasis<S, A> {
 
-    public abstract C onCommand(S sender, ExCommand<S, A> cmd, Arguments<A> args);
+  public abstract C onCommand(S sender, ExCommand<S, A> cmd, Arguments<A> args);
 
-    public abstract List<String> getTabCompletion(ExCommand<S, A> cmd, Arguments<A> args);
+  public abstract List<String> getTabCompletion(ExCommand<S, A> cmd, Arguments<A> args);
 
-    /**
-     * @param sender
-     * @param context
-     * @param option
-     * @param value
-     * @return Returns true, if command is completed
-     */
-    public abstract <V> boolean onUpdate(S sender, C context, IncCommandOption<V> option, V value);
+  /**
+   * @param sender
+   * @param context
+   * @param option
+   * @param value
+   * @return Returns true, if command is completed
+   */
+  public abstract <V> boolean onUpdate(S sender, C context, IncCommandOption<V> option, V value);
 
-    public abstract Collection<IncCommandOption<?>> getOptions();
+  public abstract Collection<IncCommandOption<?>> getOptions();
 
-    public abstract String getCommand();
+  public abstract String getCommand();
 
-    public IncCommandSelection.Builder createSelection(IncCommandOption<?> option) {
-        return new Builder().command(this.getCommand()).option(option);
-    }
+  public IncCommandSelection.Builder createSelection(IncCommandOption<?> option) {
+    return new Builder().command(this.getCommand()).option(option);
+  }
 
-    public void sendSelectionTo(S sender, IncCommandSelection.Builder selection) {
-        sender.sendPluginMessage(selection.buildToMessage(ExTextColor.PERSONAL));
-    }
+  public void sendSelectionTo(S sender, IncCommandSelection.Builder selection) {
+    sender.sendPluginMessage(selection.buildToMessage(ExTextColor.PERSONAL));
+  }
 }
