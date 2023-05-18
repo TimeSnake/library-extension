@@ -1,3 +1,8 @@
+group = project.group
+version = '1.1-SNAPSHOT'
+archivesBaseName = 'library-extension'
+var projectId = 11
+
 repositories {
   mavenLocal()
   mavenCentral()
@@ -17,6 +22,14 @@ dependencies {
   compileOnly 'net.kyori:adventure-text-serializer-plain:4.12.0'
 }
 
-group = project.group
-version = '1.1-SNAPSHOT'
-archivesBaseName = 'library-extension'
+publishing {
+  repositories {
+    maven {
+      url getDeployUrl(projectId)
+      credentials {
+        username = deploy_token_name
+        password = deploy_token_key
+      }
+    }
+  }
+}
