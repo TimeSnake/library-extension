@@ -1,6 +1,10 @@
+plugins {
+  id 'java-library'
+  id 'maven-publish'
+}
+
 group = project.group
-version = '1.1-SNAPSHOT'
-archivesBaseName = 'library-extension'
+version = '1-1.1'
 var projectId = 11
 
 repositories {
