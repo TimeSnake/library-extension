@@ -9,8 +9,6 @@ import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.cmd.Argument;
 import de.timesnake.library.extension.util.cmd.Arguments;
 import de.timesnake.library.extension.util.cmd.Sender;
-import java.util.Collection;
-import java.util.Iterator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
@@ -18,6 +16,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.jetbrains.annotations.NotNull;
+
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Iterator;
 
 public interface Chat {
 
@@ -99,7 +101,7 @@ public interface Chat {
   }
 
   static Component listToComponent(Collection<?> list, TextColor valueColor,
-      TextColor separaterColor) {
+                                   TextColor separaterColor) {
     if (list.size() == 0) {
       return Component.empty();
     }
@@ -258,15 +260,19 @@ public interface Chat {
     return "(Code: " + codeType + code + " " + plugin.getCode() + ")";
   }
 
-  static String getTimeString(Integer time) {
-    if (time >= 3600) {
-      return time / 3600 + "h " + (time % 3600) / 60 + "min " + time % 60 + "s";
+  static String getTimeString(Integer timeInSec) {
+    return getTimeString(Duration.ofSeconds(timeInSec));
+  }
+
+  static String getTimeString(Duration time) {
+    StringBuilder sb = new StringBuilder();
+    if (time.toHoursPart() > 0) {
+      sb.append(time.toHoursPart()).append("h ");
     }
-    if (time >= 60) {
-      return time / 60 + "min " + time % 60 + "s";
-    } else {
-      return time % 60 + "s";
+    if (time.toMinutesPart() > 0) {
+      sb.append(time.toMinutesPart()).append("min ");
     }
+    return sb.append(time.toSecondsPart()).append("s").toString();
   }
 
   static String listToString(Collection<?> list) {
@@ -283,6 +289,10 @@ public interface Chat {
     sb.delete(sb.length() - 2, sb.length());
 
     return sb.toString();
+  }
+
+  static String getLocationString(int x, int y, int z) {
+    return x + " " + y + " " + z;
   }
 
 }

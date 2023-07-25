@@ -14,8 +14,7 @@ public class IncCommandContext {
 
   public <V> void addOption(IncCommandOption<V> option, V value) {
     if (value instanceof Collection<?>) {
-      ((Collection) this.options.computeIfAbsent(option, o -> new LinkedList<>()))
-          .addAll(((Collection<?>) value));
+      ((Collection) this.options.computeIfAbsent(option, o -> new LinkedList<>())).addAll(((Collection<?>) value));
     } else {
       this.options.put(option, value);
     }
