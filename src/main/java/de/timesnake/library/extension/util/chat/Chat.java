@@ -275,8 +275,9 @@ public interface Chat {
     return sb.append(time.toSecondsPart()).append("s").toString();
   }
 
+  @Deprecated
   static String listToString(Collection<?> list) {
-    if (list.size() == 0) {
+    if (list.isEmpty()) {
       return "";
     }
 
