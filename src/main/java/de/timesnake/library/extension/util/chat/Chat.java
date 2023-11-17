@@ -77,7 +77,7 @@ public interface Chat {
   }
 
   static Component listToComponent(Collection<?> list) {
-    if (list.size() == 0) {
+    if (list.isEmpty()) {
       return Component.empty();
     }
 
@@ -102,7 +102,7 @@ public interface Chat {
 
   static Component listToComponent(Collection<?> list, TextColor valueColor,
                                    TextColor separaterColor) {
-    if (list.size() == 0) {
+    if (list.isEmpty()) {
       return Component.empty();
     }
 
@@ -161,7 +161,7 @@ public interface Chat {
       return null;
     }
     for (String part : string.split("§")) {
-      if (part.length() != 0) {
+      if (!part.isEmpty()) {
         if (part.length() == 1) {
           net.kyori.adventure.text.format.NamedTextColor color = parseChatColor(
               part.charAt(0));
