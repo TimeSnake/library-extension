@@ -6,21 +6,25 @@ package de.timesnake.library.extension.util.chat;
 
 import de.timesnake.library.extension.util.chat.Code.Builder;
 import de.timesnake.library.extension.util.chat.Code.Type;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Plugin {
 
+  /**
+   * @deprecated in favour of {@link #SERVER}
+   */
+  @Deprecated
   public static final Plugin SYSTEM = new Plugin("System", "LES");
-  public static final Plugin CONSOLE = new Plugin("Console", "LEC");
-  public static final Plugin BUKKIT = new Plugin("Bukkit", "LEB");
-  public static final Plugin PROXY = new Plugin("Proxy", "LEP");
-  public static final Plugin INFO = new Plugin("Info", "LEI");
+  public static final Plugin SERVER = new Plugin("Server", "LEB");
   public static final Plugin NETWORK = new Plugin("Network", "LEN");
+
+  public static final Plugin INFO = new Plugin("Info", "LEI");
   public static final Plugin TIME_COINS = new Plugin("Coins", "LET");
+
   public static final Plugin PRIVATE_MESSAGES = new Plugin("Msg", "LEM");
   public static final Plugin MAILS = new Plugin("Mails", "LEN");
-  public static final Plugin CHATS = new Plugin("Chats", "CHT");
 
   private final String name;
   private final String code;
