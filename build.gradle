@@ -3,7 +3,7 @@ plugins {
   id 'maven-publish'
 }
 
-group = project.group
+group = "de.timesnake"
 version = '1.2'
 var projectId = 11
 
@@ -11,30 +11,49 @@ repositories {
   mavenLocal()
   mavenCentral()
   maven {
-    url = uri 'https://repo.maven.apache.org/maven2/'
+    url 'https://repo.maven.apache.org/maven2/'
+  }
+  maven {
+    url "https://git.timesnake.de/api/v4/groups/7/-/packages/maven"
+    name "TimeSnake"
+    credentials {
+      username = timesnakeUser
+      password = timesnakePassword
+    }
   }
 }
 
 dependencies {
-  compileOnly project(':database-api')
-  compileOnly project(':channel-api')
-  compileOnly project(':library-basic')
-  compileOnly project(':library-chat')
+  compileOnly "de.timesnake:database-api:2.2.1"
+  compileOnly "de.timesnake:channel-api:3.0.5"
+  compileOnly "de.timesnake:library-basic:1.2.2"
+  compileOnly "de.timesnake:library-chat:1.1"
 
-  compileOnly project.adventure_api
+  compileOnly "net.kyori:adventure-api:4.11.0"
   compileOnly 'net.kyori:adventure-text-serializer-legacy:4.12.0'
   compileOnly 'net.kyori:adventure-text-serializer-plain:4.12.0'
+}
+
+configurations.configureEach {
+  resolutionStrategy.dependencySubstitution {
+    substitute module("de.timesnake:database-api") using project(":database-api")
+    substitute module("de.timesnake:channel-api") using project(":channel-api")
+    substitute module("de.timesnake:library-basic") using project(":library-basic")
+    substitute module("de.timesnake:library-chat") using project(":library-chat")
+  }
 }
 
 publishing {
   repositories {
     maven {
-        url "https://git.timesnake.de/api/v4/projects/" + projectId + "/packages/maven"
-      credentials {
-          username = timesnakeDeployUser
-          password = timesnakeDeployKey
+      url "https://git.timesnake.de/api/v4/projects/" + projectId + "/packages/maven"
+      credentials(HttpHeaderCredentials) {
+        name = "Job-Token"
+        value = System.getenv("CI_JOB_TOKEN")
       }
-
+      authentication {
+        header(HttpHeaderAuthentication)
+      }
     }
   }
 
